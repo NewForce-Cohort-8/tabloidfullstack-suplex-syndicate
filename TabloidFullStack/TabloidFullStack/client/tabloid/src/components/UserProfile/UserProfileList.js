@@ -17,5 +17,12 @@ useEffect(() => {
 }, []);
 
 return (
-    <div className=
+    <Container>
+        <h1> User Profile</h1>
+        <tbody>
+            <th>Name</th>
+            <th>Display Name</th>
+            <th>User Type</th>
+        </tbody>
+    </Container>
 )
