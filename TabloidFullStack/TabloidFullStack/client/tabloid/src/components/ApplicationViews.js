@@ -5,6 +5,8 @@ import { TagList } from "./tags/TagList.js";
 import { AddTag } from "./tags/AddTag.js";
 import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
+import PostDetails from "./PostDetails.js";
+
 
 
 export default function ApplicationViews() {
@@ -13,10 +15,9 @@ export default function ApplicationViews() {
 			<Route path='/' element={<Hello />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
-        	<Route path="/posts" element={<PostList />} />
-
+      <Route path="/posts" element={<PostList />} />
+      <Route path="/posts/:id" element={<PostDetails />} /> 
       <Route path="/Categories" element={<CategoryList />} />
 		</Routes>
 	);
 }
-/* <Route path="/posts/:id" element={/* TODO: Post Details Component */
