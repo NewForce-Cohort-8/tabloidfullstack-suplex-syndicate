@@ -32,6 +32,7 @@ export const TagList = () => {
 					<tr>
 						<th>#</th>
 						<th>Name</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
