@@ -12,6 +12,8 @@ export default function ApplicationViews() {
 			<Route path='/' element={<Hello />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
+			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
+			<Route path='/Categories' element={<CategoryList />} />
 		</Routes>
 	);
 }
