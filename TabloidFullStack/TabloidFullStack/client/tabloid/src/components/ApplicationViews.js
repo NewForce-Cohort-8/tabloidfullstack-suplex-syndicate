@@ -8,7 +8,7 @@ export default function ApplicationViews() {
  return(
       <Routes>
         <Route path="/" element={<Hello />} />
-        <Route path="/post" element={<PostList />} />
+        <Route path="/posts" element={<PostList />} />
 
       </Routes>
    );
