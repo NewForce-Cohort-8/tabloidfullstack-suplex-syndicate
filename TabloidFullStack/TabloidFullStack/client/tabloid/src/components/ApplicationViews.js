@@ -1,12 +1,15 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Hello from "./Hello";
+import PostList from "./PostList";
 
 export default function ApplicationViews() {
 
  return(
       <Routes>
         <Route path="/" element={<Hello />} />
+        <Route path="/post" element={<PostList />} />
+
       </Routes>
    );
  
