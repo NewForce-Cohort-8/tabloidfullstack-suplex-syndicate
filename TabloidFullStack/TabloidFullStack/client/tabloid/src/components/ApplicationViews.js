@@ -11,8 +11,9 @@ export default function ApplicationViews() {
 			<Route path='/' element={<Hello />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
-        <Route path="/posts" element={<PostList />} />
+        	<Route path="/posts" element={<PostList />} />
 
 		</Routes>
 	);
 }
+/* <Route path="/posts/:id" element={/* TODO: Post Details Component */
