@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { getAllCategories} from "../../APIManager/CategoryManager.js";
+import { getAllCategories} from "../../Managers/CategoryManager.js";
 import { Container, Table } from "reactstrap";
 import { CategoryRow } from "./CategoryRow.js";
 

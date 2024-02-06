@@ -1,15 +1,18 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Hello from "./Hello";
-import { CategoryList } from "./categories/CategoryList";
+import { TagList } from "./tags/TagList.js";
+import { AddTag } from "./tags/AddTag.js";
+import { CategoryList } from "./categories/CategoryList.js";
+
 
 export default function ApplicationViews() {
-
- return(
-      <Routes>
-        <Route path="/" element={<Hello />} />
-         <Route path="/Categories" element={<CategoryList />} />
-      </Routes>
-   );
- 
+	return (
+		<Routes>
+			<Route path='/' element={<Hello />} />
+			<Route path='/Tags' element={<TagList />} />
+			<Route path='/Tags/Add' element={<AddTag />} />
+      <Route path="/Categories" element={<CategoryList />} />
+		</Routes>
+	);
 }
