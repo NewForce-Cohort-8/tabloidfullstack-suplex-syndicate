@@ -12,6 +12,15 @@ export const deleteTag = (id) => {
 	return fetch(`${tagApiUrl}/${id}`, { method: "DELETE" });
 };
 
+export const updateTag = (tag) => {
+	return fetch(`${tagApiUrl}/${tag.id}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(tag),
+	});
+};
 export const addTag = (tag) => {
 	return fetch(tagApiUrl, {
 		method: "POST",

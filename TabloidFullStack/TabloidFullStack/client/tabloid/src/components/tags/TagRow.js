@@ -6,7 +6,12 @@ export const TagRow = ({ tag }) => {
 	const handleNavigate = (e) => {
 		e.preventDefault();
 		const [, tagId] = e.target.id.split("--");
-		navigate(`/Tags/Delete/${tagId}`);
+		if (e.target.id.startsWith("delete-tag")) {
+			navigate(`/Tags/Delete/${tagId}`);
+		}
+		if (e.target.id.startsWith("edit-tag")) {
+			navigate(`/Tags/Edit/${tagId}`);
+		}
 	};
 
 	return (
@@ -20,6 +25,9 @@ export const TagRow = ({ tag }) => {
 					onClick={(e) => handleNavigate(e)}
 				>
 					Delete
+				</Button>
+				<Button id={`edit-tag--${tag.id}`} onClick={(e) => handleNavigate(e)}>
+					Edit
 				</Button>
 			</td>
 		</tr>
