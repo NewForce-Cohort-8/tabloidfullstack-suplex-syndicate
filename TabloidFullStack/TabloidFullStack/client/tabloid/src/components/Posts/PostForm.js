@@ -1,23 +1,36 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { addPost } from "../Managers/PostManager"
+import { addPost } from "../../Managers/PostManager"
+import { getAllCategories } from "../../Managers/CategoryManager";
 
 export const PostForm = () => {
+
+    const localTabloidUser = localStorage.getItem("userProfile");
+    const tabloidUserObject = JSON.parse(localTabloidUser)
+    const [categories, setCategories] = useState([])
+    const navigate = useNavigate()
+
+    const getCategories = () => {
+        getAllCategories().then(allCategories => setCategories(allCategories));
+    }
+
+    // useEffect(() => {
+    //     getCategories()
+    // }, [])
+
     const [newPost, setNewPost] = useState( 
         {
             title: '',
             content: '', 
             imageLocation: '', 
             createDateTime: Date.now(), 
-            publishDateTime: '', 
+            publishDateTime: Date.now(), 
             IsApproved: true, 
             CategoryId: 1, 
-            userProfileId: 1
+            userProfileId: tabloidUserObject.id
 
         }
     )
-
-    const navigate = useNavigate()
 
     const clickTheSaveButton = (e) => {
         e.preventDefault()
@@ -25,12 +38,10 @@ export const PostForm = () => {
         const newPostToSendToAPI = {
             Title: newPost.title,
             Content: newPost.content, 
-            ImageLocation: newPost.imageLocation, 
-            CreateDateTime: new Date().toISOString, 
-            PublishDateTime: '', 
+            ImageLocation: newPost.imageLocation,
             IsApproved: true, 
-            CategoryId: 1, 
-            UserProfileId: 1  
+            CategoryId: 1,
+            UserProfileId: tabloidUserObject.id
         }
 
         return addPost(newPostToSendToAPI)

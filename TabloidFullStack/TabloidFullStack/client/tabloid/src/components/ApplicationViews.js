@@ -3,10 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import Hello from "./Hello";
 import { TagList } from "./tags/TagList.js";
 import { AddTag } from "./tags/AddTag.js";
-import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
-import PostDetails from "./PostDetails.js";
-import { PostForm } from "./PostForm.js";
+import PostList from "./Posts/PostList.js";
+import PostDetails from "./Posts/PostDetails.js";
+import { PostForm } from "./Posts/PostForm.js";
 
 export default function ApplicationViews() {
 	return (
@@ -15,8 +15,9 @@ export default function ApplicationViews() {
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
 			<Route path="/post" element={<PostList />} />
+
 			<Route path="/post/:id" element={<PostDetails />} />
-			<Route path="/postForm/" element={<PostForm/>} />
+			<Route path="/postForm/" element={<PostForm />} />
 			<Route path="/Categories" element={<CategoryList />} />
 
 		</Routes>
