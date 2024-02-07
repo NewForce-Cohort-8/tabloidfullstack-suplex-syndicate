@@ -28,18 +28,20 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 					<Nav className='mr-auto' navbar>
 						{/* When isLoggedIn === true, we will render the Home link */}
 						{isLoggedIn && (
+							<>
 							<NavItem>
-								<NavLink tag={RRNavLink} to='/'>
-									Home
-								</NavLink>
+								<NavLink tag={RRNavLink} to='/'>Home</NavLink>
 							</NavItem>
-						)}
-						{isLoggedIn && (
+              <NavItem>
+                <NavLink tag={RRNavLink} to="/post">Posts</NavLink>
+              </NavItem>
 							<NavItem>
-								<NavLink tag={RRNavLink} to='/Tags'>
-									Tag Management
-								</NavLink>
+								<NavLink tag={RRNavLink} to='/Tags'>Tag Management</NavLink>
 							</NavItem>
+              <NavItem>
+                <NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
+             </NavItem>  
+            </>
 						)}
 						{isLoggedIn && 
 						 user.userTypeId == 1  && (
@@ -49,6 +51,7 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 							    </NavItem>
 						)}
 					</Nav>
+
 					<Nav navbar>
 						{isLoggedIn && (
 							<>
