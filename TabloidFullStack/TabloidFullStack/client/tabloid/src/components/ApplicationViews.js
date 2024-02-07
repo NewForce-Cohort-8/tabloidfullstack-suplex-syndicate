@@ -6,6 +6,7 @@ import { AddTag } from "./tags/AddTag.js";
 import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
 import PostDetails from "./PostDetails.js";
+import { PostForm } from "./PostForm.js";
 
 export default function ApplicationViews() {
 	return (
@@ -13,9 +14,10 @@ export default function ApplicationViews() {
 			<Route path='/' element={<Hello />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
-      <Route path="/post" element={<PostList />} />
-      <Route path="/post/:id" element={<PostDetails />} /> 
-      <Route path="/Categories" element={<CategoryList />} />
+			<Route path="/post" element={<PostList />} />
+			<Route path="/post/:id" element={<PostDetails />} />
+			<Route path="/postForm/" element={<PostForm/>} />
+			<Route path="/Categories" element={<CategoryList />} />
 
 		</Routes>
 	);
