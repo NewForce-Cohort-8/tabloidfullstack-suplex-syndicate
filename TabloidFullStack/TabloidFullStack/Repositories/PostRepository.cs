@@ -16,6 +16,11 @@ namespace TabloidFullStack.Repositories
         {
             using (var conn = Connection)
             {
+                //To Update later
+                //SELECT p.Id AS PostId, p.Title, p.Content, p.ImageLocation AS HeaderImage, p.CreateDateTime, p.PublishDateTime, p.IsApproved, p.CategoryId, p.UserProfileId as PostUserProfileId,
+
+                //     up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, up.ImageLocation AS AuthorImage
+
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
