@@ -8,8 +8,11 @@ import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
 import PostDetails from "./PostDetails.js";
 import { EditTag } from "./tags/EditTag.js";
+import UserProfileList from "./UserProfile/UserProfileList";
+
 
 export default function ApplicationViews() {
+	const user= JSON.parse(localStorage.getItem("userProfile"));
 	return (
 		<Routes>
 			<Route path='/' element={<Hello />} />
@@ -20,6 +23,7 @@ export default function ApplicationViews() {
 			<Route path='/post' element={<PostList />} />
 			<Route path='/post/:id' element={<PostDetails />} />
 			<Route path='/Categories' element={<CategoryList />} />
+			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
 		</Routes>
 	);
 }
