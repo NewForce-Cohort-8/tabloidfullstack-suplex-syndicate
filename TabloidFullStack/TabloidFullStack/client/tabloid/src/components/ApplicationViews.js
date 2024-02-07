@@ -7,9 +7,6 @@ import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
 import PostDetails from "./PostDetails.js";
 
-
-import PostList from "./PostList";
-
 export default function ApplicationViews() {
 	return (
 		<Routes>
@@ -19,7 +16,6 @@ export default function ApplicationViews() {
       <Route path="/post" element={<PostList />} />
       <Route path="/post/:id" element={<PostDetails />} /> 
       <Route path="/Categories" element={<CategoryList />} />
-        <Route path="/posts" element={<PostList />} />
 
 		</Routes>
 	);
