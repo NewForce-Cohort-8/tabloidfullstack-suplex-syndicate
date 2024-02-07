@@ -33,7 +33,7 @@ namespace TabloidFullStack.Models
         [Required]
         public int UserProfileId { get; set; }
 
-        public UserProfile UserProfile { get; set; }
+        public UserProfile? UserProfile { get; set; }
 
     }
 }
