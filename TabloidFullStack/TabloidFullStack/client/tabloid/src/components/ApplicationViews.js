@@ -10,6 +10,7 @@ import UserProfileList from "./UserProfile/UserProfileList";
 
 
 export default function ApplicationViews() {
+	const user= JSON.parse(localStorage.getItem("userProfile"));
 	return (
 		<Routes>
 			<Route path='/' element={<Hello />} />
@@ -19,7 +20,7 @@ export default function ApplicationViews() {
 			<Route path='/post/:id' element={<PostDetails />} />
 			<Route path='/Categories' element={<CategoryList />} />
 			<Route path='/posts' element={<PostList />} />
-			<Route path="/UserProfiles" element={<UserProfileList />} />
+			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
 		</Routes>
 	);
 }
