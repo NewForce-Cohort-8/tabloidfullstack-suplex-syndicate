@@ -1,28 +1,23 @@
-import React, { useEffect, useState} from "react";
-import { getAllProfiles } from "../Managers/UserProfileManager"
-import { UserProfile } from "./UserProfile"
+import React, { useEffect, useState } from "react";
+import { getAllUserProfiles } from "../../Managers/UserProfileManager";
 
-export const UserProfileList = () => {
-        const[profiles, setProfiles] useState([]);
+export default function UserProfileList() {
+  const [userProfiles, setUserProfiles] = useState([]);
+
+  useEffect(() => {
+    getAllUserProfiles().then(setUserProfiles);
+  }, []);
+
+  return (
+    <div>
+      <h2>User Profiles</h2>
+      <ul>
+        {userProfiles.map((user) => (
+          <li key={user.id}>
+            {user.fullName} - {user.displayName} - {user.userType.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
-
-const getUserProfiles = () => {
-    getallprofiles().then(fetchedProfiles => {
-        setProfiles(fetchedProfiles);
-    });
-};
-
-useEffect(() => {
-    getUserProfiles();
-}, []);
-
-return (
-    <Container>
-        <h1> User Profile</h1>
-        <tbody>
-            <th>Name</th>
-            <th>Display Name</th>
-            <th>User Type</th>
-        </tbody>
-    </Container>
-)
