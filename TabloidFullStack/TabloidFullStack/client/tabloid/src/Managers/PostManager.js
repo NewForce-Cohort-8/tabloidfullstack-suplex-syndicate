@@ -16,3 +16,7 @@ export const addPost = (singlePost) => {
     body: JSON.stringify(singlePost),
   });
 };
+
+export const getPost = (id) => {
+    return fetch(`/api/post/${id}`).then((res) => res.json());
+};

@@ -3,7 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import Hello from "./Hello";
 import { TagList } from "./tags/TagList.js";
 import { AddTag } from "./tags/AddTag.js";
+import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
+import PostDetails from "./PostDetails.js";
+
 
 import PostList from "./PostList";
 
@@ -13,6 +16,8 @@ export default function ApplicationViews() {
 			<Route path='/' element={<Hello />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
+      <Route path="/post" element={<PostList />} />
+      <Route path="/post/:id" element={<PostDetails />} /> 
       <Route path="/Categories" element={<CategoryList />} />
         <Route path="/posts" element={<PostList />} />
 
