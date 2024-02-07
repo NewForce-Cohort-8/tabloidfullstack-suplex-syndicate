@@ -11,9 +11,11 @@ import {
 	NavLink,
 } from "reactstrap";
 
-export default function Header({ isLoggedIn, setIsLoggedIn }) {
+export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggle = () => setIsOpen(!isOpen);
+
+	const user= JSON.parse(localStorage.getItem("userProfile"));
 
 	return (
 		<div>
@@ -43,6 +45,13 @@ export default function Header({ isLoggedIn, setIsLoggedIn }) {
 								<NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
 							</NavItem>  
 							</>
+						)}
+						{isLoggedIn && 
+						 user.userTypeId == 1  && (
+							<NavItem>
+								<NavLink tag={RRNavLink} to="/userprofiles">
+									User Profiles</NavLink>
+							    </NavItem>
 						)}
 					</Nav>
 

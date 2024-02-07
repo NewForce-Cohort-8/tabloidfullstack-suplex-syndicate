@@ -29,6 +29,13 @@ namespace TabloidFullStack.Controllers
             return Ok(user);
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var profiles = _userRepository.GetAllProfiles();
+            return Ok(profiles);
+        }
+
         [HttpPost]
         public IActionResult Post(UserProfile userProfile)
         {
