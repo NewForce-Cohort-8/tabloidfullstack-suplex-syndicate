@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCommentById, updateComment } from "../../Managers/CommentManager";
 import { Button, Container, Form, FormGroup, Input, Label } from "reactstrap";
 import { getPost } from "../../Managers/PostManager";
@@ -17,6 +17,7 @@ export const EditComment = () => {
 	});
 	const [post, setPost] = useState([]);
 	const navigate = useNavigate();
+	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const getComment = () => {
 		return getCommentById(commentId).then((comment) => setComment(comment));
 	};
@@ -44,60 +45,68 @@ export const EditComment = () => {
 
 	const copy = { ...comment };
 	console.log(copy);
-
-	return (
-		<Container>
-			<h3 className='my-4'>Editing your comment for post: {post.title}</h3>
-			<Form>
-				<FormGroup className='mb-4'>
-					<Label for='subject'>Subject</Label>
-					<Input
-						id='subject'
-						name='subject'
-						type='text'
-						value={comment.subject}
-						onChange={(e) => {
-							e.preventDefault();
-							const copy = { ...comment };
-							copy.subject = e.target.value;
-							setComment(copy);
+	if (user.id == comment.userProfileId) {
+		return (
+			<Container>
+				<h3 className='my-4'>Editing your comment for post: {post.title}</h3>
+				<Form>
+					<FormGroup className='mb-4'>
+						<Label for='subject'>Subject</Label>
+						<Input
+							id='subject'
+							name='subject'
+							type='text'
+							value={comment.subject}
+							onChange={(e) => {
+								e.preventDefault();
+								const copy = { ...comment };
+								copy.subject = e.target.value;
+								setComment(copy);
+							}}
+						/>
+					</FormGroup>
+					<FormGroup className='mb-4'>
+						<Label for='content'>Content</Label>
+						<Input
+							id='content'
+							name='content'
+							type='textarea'
+							value={comment.content}
+							onChange={(e) => {
+								e.preventDefault();
+								const copy = { ...comment };
+								copy.content = e.target.value;
+								setComment(copy);
+							}}
+						/>
+					</FormGroup>
+					<Button
+						color='primary'
+						onClick={(e) => {
+							return handleUpdateComment(e);
 						}}
-					/>
-				</FormGroup>
-				<FormGroup className='mb-4'>
-					<Label for='content'>Content</Label>
-					<Input
-						id='content'
-						name='content'
-						type='textarea'
-						value={comment.content}
-						onChange={(e) => {
+						className='me-2'
+					>
+						Save
+					</Button>
+					<Button
+						outline
+						onClick={(e) => {
 							e.preventDefault();
-							const copy = { ...comment };
-							copy.content = e.target.value;
-							setComment(copy);
+							navigate(`/post/${postId}/Comments`);
 						}}
-					/>
-				</FormGroup>
-				<Button
-					color='primary'
-					onClick={(e) => {
-						return handleUpdateComment(e);
-					}}
-					className='me-2'
-				>
-					Save
-				</Button>
-				<Button
-					outline
-					onClick={(e) => {
-						e.preventDefault();
-						navigate(`/post/${postId}/Comments`);
-					}}
-				>
-					Cancel
-				</Button>
-			</Form>
-		</Container>
-	);
+					>
+						Cancel
+					</Button>
+				</Form>
+			</Container>
+		);
+	} else {
+		return (
+			<Container>
+				<h3>Must be the author of the comment to edit the comment</h3>
+				<Link to={`/Post/${post.id}/Comments`}>Back to comments</Link>
+			</Container>
+		);
+	}
 };
