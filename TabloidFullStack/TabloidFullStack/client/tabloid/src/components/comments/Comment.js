@@ -18,15 +18,15 @@ export const Comment = ({ comment, postId }) => {
 	const formattedDate = `${month}/${day}/${year}`;
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const navigate = useNavigate();
-	useEffect(() => {
-		console.log(comment);
-	}, [comment]);
 
 	const handleNavigate = (e) => {
 		e.preventDefault();
 		const [, commentId] = e.target.id.split("--");
 		if (e.target.id.startsWith("delete-comment")) {
 			navigate(`/post/${postId}/Comments/Delete/${commentId}`);
+		}
+		if (e.target.id.startsWith("edit-comment")) {
+			navigate(`/post/${postId}/Comments/Edit/${commentId}`);
 		}
 	};
 	return (
@@ -43,6 +43,13 @@ export const Comment = ({ comment, postId }) => {
 			</CardBody>
 			{user.id == comment.userProfileId ? (
 				<CardFooter className='d-flex justify-content-end'>
+					<Button
+						id={`edit-comment--${comment.id}`}
+						onClick={(e) => handleNavigate(e)}
+						className='me-2'
+					>
+						Edit
+					</Button>
 					<Button
 						color='danger'
 						id={`delete-comment--${comment.id}`}

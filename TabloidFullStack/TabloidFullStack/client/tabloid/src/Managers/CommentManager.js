@@ -21,3 +21,13 @@ export const addComment = (comment) => {
 export const deleteComment = (id) => {
 	return fetch(`${commentApiUrl}${id}`, { method: "DELETE" });
 };
+
+export const updateComment = (comment) => {
+	return fetch(`${commentApiUrl}${comment.id}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(comment),
+	});
+};

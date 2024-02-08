@@ -139,5 +139,33 @@ namespace TabloidFullStack.Repositories
                 }
             }
         }
+
+        public void Update(Comment comment)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Comment
+                           SET PostId = @PostId,
+                           UserProfileId = @UserProfileId,
+                           Subject = @Subject,
+                           Content = @Content,
+                           CreateDateTime = @CreateDateTime
+                           WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@UserProfileId", comment.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@PostId", comment.PostId);
+                    DbUtils.AddParameter(cmd, "@Subject", comment.Subject);
+                    DbUtils.AddParameter(cmd, "@Content", comment.Content);
+                    DbUtils.AddParameter(cmd, "@CreateDateTime", comment.CreateDateTime);
+                    DbUtils.AddParameter(cmd, "@Id", comment.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

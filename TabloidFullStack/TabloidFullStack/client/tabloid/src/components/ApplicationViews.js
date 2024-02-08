@@ -12,6 +12,8 @@ import UserProfileList from "./UserProfile/UserProfileList";
 import { CommentList } from "./comments/CommentList.js";
 import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
+import { EditComment } from "./comments/EditComment.js";
+import { CommentDetails } from "./comments/CommentDetails.js";
 
 export default function ApplicationViews() {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -29,6 +31,14 @@ export default function ApplicationViews() {
 			<Route
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}
+			/>
+      <Route
+				path='/Post/:postId/Comments/Edit/:commentId'
+				element={<EditComment />}
+			/>
+      <Route
+				path='/Post/:postId/Comments/:commentId'
+				element={<CommentDetails />}
 			/>
 			<Route path='/Categories' element={<CategoryList />} />
 			{user.userTypeId == 1 ? (
