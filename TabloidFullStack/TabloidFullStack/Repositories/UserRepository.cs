@@ -1,11 +1,60 @@
 ﻿using TabloidFullStack.Models;
 using TabloidFullStack.Utils;
 
+
 namespace TabloidFullStack.Repositories
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
         public UserRepository(IConfiguration configuration) : base(configuration) { }
+
+        public List<UserProfile> GetAllProfiles()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                   cmd.CommandText = @"
+                        SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
+                               ut.Name AS UserTypeName
+                          FROM UserProfile up
+                               LEFT JOIN UserType ut ON up.UserTypeId = ut.Id
+                         ORDER BY up.DisplayName";
+
+                    // DbUtils.AddParameter(cmd, "@email", email);
+
+                    // UserProfile userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+
+                    var profiles = new List<UserProfile>();
+                    while (reader.Read())
+                    {
+                        profiles.Add(new UserProfile()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirstName = DbUtils.GetString(reader, "FirstName"),
+                            LastName = DbUtils.GetString(reader, "LastName"),
+                            DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                            ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+                            UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                            UserType = new UserType()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                Name = DbUtils.GetString(reader, "UserTypeName"),
+                            }
+                        });
+                    }
+                    reader.Close();
+
+                    return profiles;
+                }
+            }
+        }
 
         public UserProfile GetByEmail(string email)
         {

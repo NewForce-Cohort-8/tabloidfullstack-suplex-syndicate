@@ -2,7 +2,6 @@
 
 
 
-
 const apiUrl = "https://localhost:5001";
 
 export const login = (userObject) => {
@@ -38,7 +37,10 @@ export const register = (userObject, password) => {
 };
 
 
-
+export const getAllUserProfiles = () => {
+  return fetch(`${apiUrl}/api/userprofile`)
+    .then((res) => res.json());
+};
 
 
 // return (

@@ -11,9 +11,11 @@ import {
 	NavLink,
 } from "reactstrap";
 
-export default function Header({ isLoggedIn, setIsLoggedIn }) {
+export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggle = () => setIsOpen(!isOpen);
+
+	const user= JSON.parse(localStorage.getItem("userProfile"));
 
 	return (
 		<div>
@@ -28,24 +30,28 @@ export default function Header({ isLoggedIn, setIsLoggedIn }) {
 						{isLoggedIn && (
 							<>
 							<NavItem>
-								<NavLink tag={RRNavLink} to='/'>
-									Home
-								</NavLink>
+								<NavLink tag={RRNavLink} to='/'>Home</NavLink>
 							</NavItem>
+              <NavItem>
+                <NavLink tag={RRNavLink} to="/post">Posts</NavLink>
+              </NavItem>
 							<NavItem>
-                				<NavLink tag={RRNavLink} to="/posts">Posts</NavLink>
-              				</NavItem>
-							<NavItem>
-								<NavLink tag={RRNavLink} to='/Tags'>
-									Tag Management
-								</NavLink>
+								<NavLink tag={RRNavLink} to='/Tags'>Tag Management</NavLink>
 							</NavItem>
-              				<NavItem>
-                				<NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
-             				</NavItem>  
-							</>
+              <NavItem>
+                <NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
+             </NavItem>  
+            </>
+						)}
+						{isLoggedIn && 
+						 user.userTypeId == 1  && (
+							<NavItem>
+								<NavLink tag={RRNavLink} to="/userprofiles">
+									User Profiles</NavLink>
+							    </NavItem>
 						)}
 					</Nav>
+
 					<Nav navbar>
 						{isLoggedIn && (
 							<>
