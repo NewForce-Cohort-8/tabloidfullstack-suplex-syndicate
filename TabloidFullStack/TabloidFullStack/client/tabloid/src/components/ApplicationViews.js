@@ -9,6 +9,7 @@ import { CategoryList } from "./categories/CategoryList.js";
 import PostDetails from "./PostDetails.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
+import UserProfile from "./UserProfile/UserProfile.js";
 
 
 export default function ApplicationViews() {
@@ -24,6 +25,7 @@ export default function ApplicationViews() {
 			<Route path='/post/:id' element={<PostDetails />} />
 			<Route path='/Categories' element={<CategoryList />} />
 			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
+			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 		</Routes>
 	);
 }
