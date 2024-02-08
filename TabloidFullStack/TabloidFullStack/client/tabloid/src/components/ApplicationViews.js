@@ -9,11 +9,12 @@ import { CategoryList } from "./categories/CategoryList.js";
 import PostDetails from "./PostDetails.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
-import UserProfile from "./UserProfile/UserProfile.js";
+import { CommentList } from "./comments/CommentList.js";
+import { AddComment } from "./comments/AddComment.js";import UserProfile from "./UserProfile/UserProfile.js";
 
 
 export default function ApplicationViews() {
-	const user= JSON.parse(localStorage.getItem("userProfile"));
+	const user = JSON.parse(localStorage.getItem("userProfile"));
 	return (
 		<Routes>
 			<Route path='/' element={<Hello />} />
@@ -23,6 +24,8 @@ export default function ApplicationViews() {
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
 			<Route path='/post' element={<PostList />} />
 			<Route path='/post/:id' element={<PostDetails />} />
+			<Route path='/Post/:postId/Comments' element={<CommentList />} />
+			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route path='/Categories' element={<CategoryList />} />
 			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
 			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}

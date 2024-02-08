@@ -14,7 +14,7 @@ namespace TabloidFullStack.Controllers
 
         public TagController(ITagRepository tagRepository)
         {
-            //_userProfileRepository = userProfileRepository;
+            //_tagProfileRepository = tagProfileRepository;
             _tagRepository = tagRepository;
         }
 
