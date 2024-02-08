@@ -22,6 +22,6 @@ namespace TabloidFullStack.Models
         [Required]
         public DateTime CreateDateTime { get; set; }
 
-        public UserProfile UserProfile { get; set; }
+        public UserProfile? UserProfile { get; set; }
     }
 }

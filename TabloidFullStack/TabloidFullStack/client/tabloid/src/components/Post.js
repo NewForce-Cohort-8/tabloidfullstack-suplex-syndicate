@@ -28,12 +28,23 @@ export const Post = ({ post }) => {
 				<Button
 					outline
 					color='primary'
+					className='me-2'
 					onClick={(e) => {
 						e.preventDefault();
 						navigate(`/Post/${post.id}/Comments`);
 					}}
 				>
 					View Comments
+				</Button>
+				<Button
+					outline
+					color='primary'
+					onClick={(e) => {
+						e.preventDefault();
+						navigate(`/Post/${post.id}/Comments/Add`);
+					}}
+				>
+					Add Comment
 				</Button>
 			</CardFooter>
 		</Card>
