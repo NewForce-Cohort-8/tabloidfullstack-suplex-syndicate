@@ -14,9 +14,10 @@ export const PostForm = () => {
         getAllCategories().then(allCategories => setCategories(allCategories));
     }
 
-    // useEffect(() => {
-    //     getCategories()
-    // }, [])
+    useEffect(() => {
+        getCategories()
+    }, [])
+
 
     const [newPost, setNewPost] = useState( 
         {
@@ -24,30 +25,42 @@ export const PostForm = () => {
             content: '', 
             imageLocation: '', 
             createDateTime: Date.now(), 
-            publishDateTime: Date.now(), 
+            publishDateTime: '', 
             IsApproved: true, 
-            CategoryId: 1, 
+            categoryId: 0, 
             userProfileId: tabloidUserObject.id
 
         }
     )
 
+    
     const clickTheSaveButton = (e) => {
         e.preventDefault()
-
+        
         const newPostToSendToAPI = {
             Title: newPost.title,
             Content: newPost.content, 
             ImageLocation: newPost.imageLocation,
+            PublishDateTime: newPost.publishDateTime,
             IsApproved: true, 
-            CategoryId: 1,
+            CategoryId: newPost.categoryId,
             UserProfileId: tabloidUserObject.id
         }
-
+        
         return addPost(newPostToSendToAPI)
-        .then(navigate("/post"))
+        .then((res) => res.json())
+            .then((post) => {
+                navigate(`/post/${post.id}`)})
+    };    
+    
+    const selectList = (event) => {
+        const copy = {
+            ...newPost
+        }
+        copy.categoryId = event.target.value
+        setNewPost(copy)
     }
-
+    
     return(
         <>
         <form className="post-form">
@@ -87,6 +100,27 @@ export const PostForm = () => {
             </fieldset>
             <fieldset>
                 <div className="form-group">
+                    <label htmlFor="category-select">Select Category: </label>
+                    <select id="type" 
+                        value={newPost.categoryId}
+                    onChange={
+                        event => selectList(event)
+                    }>
+                    <option value="0">Select a category</option>
+                    {
+                    categories.map(category => {
+                        return <option value={category.id} key={
+                            category.id
+                        }>
+                            {
+                            category.name
+                        }</option>
+                })
+                } </select>                
+                </div>
+            </fieldset>
+            <fieldset>
+                <div className="form-group">
                 <label htmlFor="imageLocation">Location of Your Image: </label>
                     <input 
                     type="text"
@@ -96,6 +130,22 @@ export const PostForm = () => {
                         (event) => {
                             const copy = { ...newPost }
                             copy.imageLocation = event.target.value
+                            setNewPost(copy)
+                        }
+                    } />
+                </div>
+            </fieldset>
+            <fieldset>
+                <div className="form-group">
+                <label htmlFor="publishDateTime">PublishDateTime: </label>
+                    <input 
+                    type="datetime-local"
+                    id="publishDateTime"
+                    value={newPost.publishDateTime}
+                    onChange={
+                        (event) => {
+                            const copy = { ...newPost }
+                            copy.publishDateTime = event.target.value
                             setNewPost(copy)
                         }
                     } />

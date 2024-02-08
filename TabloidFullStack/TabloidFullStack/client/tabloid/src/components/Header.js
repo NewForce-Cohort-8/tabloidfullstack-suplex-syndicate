@@ -36,7 +36,7 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 								<NavLink tag={RRNavLink} to="/post">Posts</NavLink>
 							</NavItem>
 							<NavItem>
-								<NavLink tag={RRNavLink} to="/postForm">Add Post</NavLink>
+								<NavLink tag={RRNavLink} to="/postForm">New Post</NavLink>
 							</NavItem>
 							<NavItem>
 								<NavLink tag={RRNavLink} to='/Tags'>Tag Management</NavLink>
