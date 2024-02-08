@@ -17,7 +17,7 @@ namespace TabloidFullStack.Repositories
                 {
                     cmd.CommandText = @"
                     SELECT c.Id, c.PostId, c.UserProfileId, c.Subject, c.Content, c.CreateDateTime,
-                    up.Id, up.FirstName, up.LastName
+                    up.Id, up.DisplayName, up.FirstName, up.LastName
                     FROM Comment c
                     LEFT JOIN UserProfile up ON up.Id = c.UserProfileId
                     WHERE c.PostId = @postId
@@ -42,9 +42,10 @@ namespace TabloidFullStack.Repositories
                             UserProfile = new UserProfile()
                             {
                                 Id = DbUtils.GetInt(reader, "UserProfileId"),
+                                DisplayName = DbUtils.GetString(reader, "DisplayName"),
                                 FirstName = DbUtils.GetString(reader, "FirstName"),
                                 LastName = DbUtils.GetString(reader, "LastName"),
-                            },
+                            }
                         };
                         comments.Add(comment);
 
