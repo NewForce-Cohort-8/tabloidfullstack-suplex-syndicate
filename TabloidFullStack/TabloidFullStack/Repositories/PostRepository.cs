@@ -28,9 +28,12 @@ namespace TabloidFullStack.Repositories
                     cmd.CommandText = @"
                     SELECT p.Id AS PostId, p.Title, p.CategoryId, p.Content, p.ImageLocation AS HeaderImage, p.CreateDateTime, p.PublishDateTime, p.IsApproved, 
 
+                     c.[Name] AS CategoryName,
+
                      up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, up.ImageLocation AS AuthorImage
 
                             FROM Post p
+                            LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
                             WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME()
                             ORDER BY PublishDateTime DESC;
@@ -46,6 +49,11 @@ namespace TabloidFullStack.Repositories
                             Id = DbUtils.GetInt(reader, "PostId"),
                             Title = DbUtils.GetString(reader, "Title"),
                             CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                            Category = new Category()
+                            {
+                                Id = DbUtils.GetInt(reader, "CategoryId"),
+                                Name = DbUtils.GetString(reader, "CategoryName"),
+                            },
                             Content = DbUtils.GetString(reader, "Content"),
                             ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
@@ -80,9 +88,12 @@ namespace TabloidFullStack.Repositories
                     cmd.CommandText = @"
                     SELECT p.Id AS PostId, p.Title, p.Content, p.ImageLocation AS HeaderImage, p.CreateDateTime, p.PublishDateTime, p.IsApproved, p.CategoryId,
 
+                      c.[Name] AS CategoryName,
+
                      up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, up.ImageLocation AS AuthorImage
 
                             FROM Post p
+                            LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
                             WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME() 
                             AND p.Id = @Id
@@ -105,6 +116,11 @@ namespace TabloidFullStack.Repositories
                             PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
                             IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
                             CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                            Category = new Category()
+                            {
+                                Id = DbUtils.GetInt(reader, "CategoryId"),
+                                Name = DbUtils.GetString(reader, "CategoryName"),
+                            },
                             UserProfile = new UserProfile()
                             {
                                 Id = DbUtils.GetInt(reader, "AuthorId"),
