@@ -4,6 +4,10 @@ export const getPostComments = (postId) => {
 	return fetch(`${commentApiUrl}${postId}`).then((res) => res.json());
 };
 
+export const getCommentById = (id) => {
+	return fetch(`${commentApiUrl}GetById/${id}`).then((res) => res.json());
+};
+
 export const addComment = (comment) => {
 	return fetch(commentApiUrl, {
 		method: "POST",
@@ -12,4 +16,8 @@ export const addComment = (comment) => {
 		},
 		body: JSON.stringify(comment),
 	});
+};
+
+export const deleteComment = (id) => {
+	return fetch(`${commentApiUrl}${id}`, { method: "DELETE" });
 };
