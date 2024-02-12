@@ -33,11 +33,30 @@ namespace TabloidFullStack.Controllers
             }
             return Ok(postTag);
         }
+
+        [HttpGet("GetByTagIdAndPostId/post-{postId}/tag-{tagId}")]
+        public IActionResult GetThisTag(int tagId, int postId)
+        {
+            var postTag = _postTagRepository.GetByTagIdAndPostId(tagId, postId);
+            if (postTag == null)
+            {
+                return NotFound();
+            }
+            return Ok(postTag);
+        }
+
         [HttpPost]
         public IActionResult Post(PostTag postTag)
         {
             _postTagRepository.Add(postTag);
             return CreatedAtAction("Get", new { id = postTag.Id }, postTag);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _postTagRepository.Delete(id);
+            return NoContent();
         }
     }
 }

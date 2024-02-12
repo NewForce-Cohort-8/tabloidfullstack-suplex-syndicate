@@ -1,12 +1,11 @@
 import { Table } from "reactstrap";
+import { RemovePostTagRow } from "./RemovePostTagRow";
 
-import { PostTagRow } from "./PostTagRow";
-
-export const AddPostTags = ({ notTagged }) => {
-	if (notTagged.length) {
+export const RemovePostTags = ({ tagged }) => {
+	if (tagged.length) {
 		return (
 			<>
-				<h4>Add Tags to Post</h4>
+				<h4>Remove Tags from Post</h4>
 				<Table striped>
 					<thead>
 						<tr>
@@ -16,8 +15,8 @@ export const AddPostTags = ({ notTagged }) => {
 						</tr>
 					</thead>
 					<tbody>
-						{notTagged.map((tag) => (
-							<PostTagRow key={tag.id} tag={tag} />
+						{tagged.map((tag) => (
+							<RemovePostTagRow key={tag.id} tag={tag} />
 						))}
 					</tbody>
 				</Table>

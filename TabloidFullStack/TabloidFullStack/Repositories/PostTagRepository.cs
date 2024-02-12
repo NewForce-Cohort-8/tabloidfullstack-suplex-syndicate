@@ -95,6 +95,40 @@ namespace TabloidFullStack.Repositories
                 }
             }
         }
+        public PostTag GetByTagIdAndPostId(int tagId, int postId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @" SELECT pt.Id as PostTagId, pt.PostId, pt.TagId
+                        FROM PostTag pt
+                        WHERE pt.TagId = @tagId AND pt.PostId = @postId;";
+
+                    DbUtils.AddParameter(cmd, "@tagId", tagId);
+                    DbUtils.AddParameter(cmd, "@postId", postId);
+
+
+                    PostTag postTag = null;
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        postTag = new PostTag()
+                        {
+                            Id = DbUtils.GetInt(reader, "PostTagId"),
+                            PostId = DbUtils.GetInt(reader, "PostId"),
+                            TagId = DbUtils.GetInt(reader, "TagId"),
+                        };
+
+                    }
+                    reader.Close();
+                    return postTag;
+                }
+            }
+        }
         public void Add(PostTag postTag)
         {
             using (var conn = Connection)
@@ -107,6 +141,20 @@ namespace TabloidFullStack.Repositories
                     DbUtils.AddParameter(cmd, "@PostId", postTag.PostId);
                     DbUtils.AddParameter(cmd, "@TagId", postTag.TagId);
                     postTag.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM PostTag WHERE Id = @Id";
+                    DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

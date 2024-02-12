@@ -3,14 +3,20 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { AddPostTags } from "./AddPostTags";
 import { getPost } from "../../Managers/PostManager";
 import { Button, Container } from "reactstrap";
-import { addPostTag, getPostTags } from "../../Managers/PostTagManager";
+import {
+	addPostTag,
+	deletePostTag,
+	getPostTags,
+} from "../../Managers/PostTagManager";
 import { getAllTags } from "../../Managers/TagManager";
+import { RemovePostTags } from "./RemovePostTags";
 
 export const PostTagsContainer = () => {
 	const { postId } = useParams();
 	const [post, setPost] = useState([]);
 	const [tags, setTags] = useState([]);
 	const [filteredTags, setFilteredTags] = useState([]);
+	const [filteredTagsToRemove, setFilteredTagsToRemove] = useState([]);
 	const navigate = useNavigate();
 	const [postTags, setPostTags] = useState([]);
 	const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -33,19 +39,35 @@ export const PostTagsContainer = () => {
 		setFilteredTags(res);
 	};
 
-	const handleAddTagsToPost = (e) => {
+	const filterPostTags = () => {
+		let res = [];
+		res = tags.filter((tag) => {
+			return postTags.find((postTag) => {
+				return postTag.tagId == tag.id;
+			});
+		});
+		setFilteredTagsToRemove(res);
+	};
+
+	const handleSave = (e) => {
 		e.preventDefault();
 		const checkboxes = document.querySelectorAll("input");
 		checkboxes.forEach((checkbox) => {
 			if (checkbox.checked) {
-				const [, tagId] = checkbox.id.split("--");
 				if (checkbox.id.startsWith("add")) {
+					const [, tagId] = checkbox.id.split("--");
 					const postTagToAdd = {
 						tagId: tagId,
 						postId: postId,
 					};
 
 					return addPostTag(postTagToAdd).then((createdPostTag) =>
+						navigate(`/post/${post.id}`)
+					);
+				}
+				if (checkbox.id.startsWith("delete")) {
+					const [, postTagId] = checkbox.id.split("--");
+					return deletePostTag(postTagId).then(() =>
 						navigate(`/post/${post.id}`)
 					);
 				}
@@ -60,6 +82,7 @@ export const PostTagsContainer = () => {
 	useEffect(() => {
 		if (postTags.length !== 0) {
 			filterTags();
+			filterPostTags();
 		} else {
 			setFilteredTags(tags);
 		}
@@ -68,12 +91,9 @@ export const PostTagsContainer = () => {
 		return (
 			<Container>
 				<h3>Manage tags for post: {post.title}</h3>
+				<RemovePostTags post={post} tagged={filteredTagsToRemove} />
 				<AddPostTags post={post} notTagged={filteredTags} />
-				<Button
-					color='primary'
-					className='me-2'
-					onClick={(e) => handleAddTagsToPost(e)}
-				>
+				<Button color='primary' className='me-2' onClick={(e) => handleSave(e)}>
 					Save
 				</Button>
 				<Link to={`/post/${post.id}`}>Cancel</Link>
