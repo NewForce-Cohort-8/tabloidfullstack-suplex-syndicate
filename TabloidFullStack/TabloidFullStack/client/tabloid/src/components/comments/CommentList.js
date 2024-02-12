@@ -32,7 +32,7 @@ export const CommentList = () => {
 			</Row>
 
 			{comments.map((comment) => (
-				<Comment comment={comment} key={comment.id} />
+				<Comment comment={comment} postId={postId} key={comment.id} />
 			))}
 		</Container>
 	);

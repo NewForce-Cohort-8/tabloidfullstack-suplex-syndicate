@@ -10,5 +10,7 @@ namespace TabloidFullStack.Repositories
         //UserProfile GetAllProfiles();
 
         List<UserProfile> GetAllProfiles();
+
+        UserProfile GetById(int Id);
     }
 }
