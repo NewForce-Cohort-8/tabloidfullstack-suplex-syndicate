@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 
-export const TagRow = ({ tag }) => {
+export const TagRow = ({ tag, post }) => {
 	const navigate = useNavigate();
 	const handleNavigate = (e) => {
 		e.preventDefault();

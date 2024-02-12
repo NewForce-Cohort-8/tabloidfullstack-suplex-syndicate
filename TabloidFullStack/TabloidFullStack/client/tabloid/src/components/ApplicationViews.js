@@ -14,6 +14,7 @@ import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
 import { CommentDetails } from "./comments/CommentDetails.js";
+import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
 
 export default function ApplicationViews() {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -32,11 +33,11 @@ export default function ApplicationViews() {
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}
 			/>
-      <Route
+			<Route
 				path='/Post/:postId/Comments/Edit/:commentId'
 				element={<EditComment />}
 			/>
-      <Route
+			<Route
 				path='/Post/:postId/Comments/:commentId'
 				element={<CommentDetails />}
 			/>
@@ -46,6 +47,7 @@ export default function ApplicationViews() {
 			) : (
 				""
 			)}
+			<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
 		</Routes>
 	);
 }
