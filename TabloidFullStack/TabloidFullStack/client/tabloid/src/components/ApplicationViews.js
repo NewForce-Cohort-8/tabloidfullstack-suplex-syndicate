@@ -16,6 +16,7 @@ import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
 import { CommentDetails } from "./comments/CommentDetails.js";
+import UserProfile from "./UserProfile/UserProfile.js";
 
 
 export default function ApplicationViews() {
@@ -45,12 +46,12 @@ export default function ApplicationViews() {
 			/>
 			<Route path='/Categories' element={<CategoryList />} />
 			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
-			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 			<Route path="/post" element={<PostList />} />
 
 			<Route path="/post/:id" element={<PostDetails />} />
 			<Route path="/postForm/" element={<PostForm />} />
 
+			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 		</Routes>
 	);
 }
