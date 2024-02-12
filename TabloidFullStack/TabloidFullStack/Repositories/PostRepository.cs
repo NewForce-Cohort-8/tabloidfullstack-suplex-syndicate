@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using TabloidFullStack.Models;
 using TabloidFullStack.Utils;
 using static TabloidFullStack.Repositories.PostRepository;
+using Microsoft.Data.SqlClient;
 
 namespace TabloidFullStack.Repositories
 {
@@ -53,7 +54,7 @@ namespace TabloidFullStack.Repositories
                             Content = DbUtils.GetString(reader, "Content"),
                             ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
+                            PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
                             IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
                             UserProfile = new UserProfile()
                             {
@@ -91,8 +92,7 @@ namespace TabloidFullStack.Repositories
                             FROM Post p
                             LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
-                            WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME() 
-                            AND p.Id = @Id
+                            WHERE p.Id = @Id
                     ";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
@@ -109,7 +109,7 @@ namespace TabloidFullStack.Repositories
                             Content = DbUtils.GetString(reader, "Content"),
                             ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            PublishDateTime = DbUtils.GetDateTime(reader, "PublishDateTime"),
+                            PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
                             IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
                             CategoryId = DbUtils.GetInt(reader, "CategoryId"),
                             Category = new Category()
@@ -147,19 +147,78 @@ namespace TabloidFullStack.Repositories
                         OUTPUT INSERTED.ID
                         VALUES (@Title, @Content, @ImageLocation, @CreateDateTime, @PublishDateTime, @IsApproved, @CategoryId, @UserProfileId)";
 
-                    DbUtils.AddParameter(cmd, "@Title", post.Title);
-                    DbUtils.AddParameter(cmd, "@Content", post.Content);
-                    DbUtils.AddParameter(cmd, "@ImageLocation", post.ImageLocation);
-                    DbUtils.AddParameter(cmd, "@CreateDateTime", DateTime.Now);
-                    DbUtils.AddParameter(cmd, "@PublishDateTime", post.PublishDateTime);
-                    DbUtils.AddParameter(cmd, "@IsApproved", post.IsApproved);
-                    DbUtils.AddParameter(cmd, "@CategoryId", post.CategoryId);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", post.UserProfileId);
+
+                    cmd.Parameters.AddWithValue("@Title", post.Title);
+                    cmd.Parameters.AddWithValue("@Content", post.Content);
+                    cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
+                    cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@PublishDateTime",DbUtils.ValueOrDBNull( post.PublishDateTime ));
+                    cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
+                    cmd.Parameters.AddWithValue("@CategoryId", DbUtils.ValueOrDBNull(post.CategoryId));
+                    cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
 
                     post.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
+
+        //public void EditPost(Post post)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //                UPDATE Post
+        //                    SET 
+        //                        [Title] = @Title,
+        //                        Content = @Content,
+        //                        ImageLocation = @ImageLocation,
+        //                        CreateDateTime = @CreateDateTime,
+        //                        PublishDateTime = @PublishDateTime,
+        //                        IsApproved = @IsApproved,
+        //                        CategoryId = @CategoryId,
+        //                        UserProfileId = @UserProfileId
+        //                    WHERE Id = @id
+        //            ";
+
+        //            cmd.Parameters.AddWithValue("@Id", post.Id);
+        //            cmd.Parameters.AddWithValue("@Title", post.Title);
+        //            cmd.Parameters.AddWithValue("@Content", post.Content);
+        //            cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
+        //            cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
+        //            cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
+        //            cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
+        //            cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
+        //            cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
+
+        //public void DeletePost(int postId)
+        //{
+        //    using (SqlConnection conn = Connection)
+        //    {
+        //        conn.Open();
+
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //                    DELETE from Comment
+        //                    WHERE PostId = @id
+        //                    DELETE FROM Post
+        //                    WHERE Id = @id
+        //                ";
+
+        //            cmd.Parameters.AddWithValue("@id", postId);
+
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
 
 
     }

@@ -41,7 +41,7 @@ export const PostForm = () => {
             Title: newPost.title,
             Content: newPost.content, 
             ImageLocation: newPost.imageLocation,
-            PublishDateTime: newPost.publishDateTime,
+            PublishDateTime: newPost.publishDateTime == "" ? null: newPost.publishDateTime,
             IsApproved: true, 
             CategoryId: newPost.categoryId,
             UserProfileId: tabloidUserObject.id
