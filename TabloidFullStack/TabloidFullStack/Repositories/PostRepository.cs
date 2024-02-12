@@ -63,6 +63,7 @@ namespace TabloidFullStack.Repositories
                                 ImageLocation = DbUtils.GetString(reader, "AuthorImage"),
                                 FirstName = DbUtils.GetString(reader, "AuthorFirstName"),
                                 LastName = DbUtils.GetString(reader, "AuthorLastName"),
+                                Email = DbUtils.GetString(reader, "Email"),
                                 CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
                             },
                         });
@@ -93,6 +94,7 @@ namespace TabloidFullStack.Repositories
                             LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
                             WHERE p.Id = @Id
+
                     ";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
@@ -162,66 +164,126 @@ namespace TabloidFullStack.Repositories
             }
         }
 
-        //public void EditPost(Post post)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                UPDATE Post
-        //                    SET 
-        //                        [Title] = @Title,
-        //                        Content = @Content,
-        //                        ImageLocation = @ImageLocation,
-        //                        CreateDateTime = @CreateDateTime,
-        //                        PublishDateTime = @PublishDateTime,
-        //                        IsApproved = @IsApproved,
-        //                        CategoryId = @CategoryId,
-        //                        UserProfileId = @UserProfileId
-        //                    WHERE Id = @id
-        //            ";
+        public List<Post> GetPostByAuthor(int userProfileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    SELECT p.Id AS PostId, p.Title, p.Content, p.ImageLocation AS HeaderImage, p.CreateDateTime, p.PublishDateTime, p.IsApproved, p.CategoryId,
 
-        //            cmd.Parameters.AddWithValue("@Id", post.Id);
-        //            cmd.Parameters.AddWithValue("@Title", post.Title);
-        //            cmd.Parameters.AddWithValue("@Content", post.Content);
-        //            cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
-        //            cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
-        //            cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
-        //            cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
-        //            cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
-        //            cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+                      c.[Name] AS CategoryName,
 
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //}
+                     up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, up.LastName AS AuthorLastName, up.CreateDateTime AS AuthorCreateDateTime, up.ImageLocation AS AuthorImage
 
-        //public void DeletePost(int postId)
-        //{
-        //    using (SqlConnection conn = Connection)
-        //    {
-        //        conn.Open();
+                            FROM Post p
+                            LEFT JOIN Category c ON p.CategoryId = c.id
+                            LEFT JOIN UserProfile up ON p.UserProfileId = up.id
+                            WHERE up.id = @userProfileId
+                            ORDER BY p.CreateDateTime desc
+                    ";
 
-        //        using (SqlCommand cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                    DELETE from Comment
-        //                    WHERE PostId = @id
-        //                    DELETE FROM Post
-        //                    WHERE Id = @id
-        //                ";
+                    cmd.Parameters.AddWithValue("@userProfileId", "userProfileId");
 
-        //            cmd.Parameters.AddWithValue("@id", postId);
+                    var reader = cmd.ExecuteReader();
+                    var posts = new List<Post>();
 
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //}
+                    while (reader.Read())
+                    {
+                        posts.Add(new Post()
+                        {
+                            Id = DbUtils.GetInt(reader, "PostId"),
+                            Title = DbUtils.GetString(reader, "Title"),
+                            Content = DbUtils.GetString(reader, "Content"),
+                            ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
+                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                            PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
+                            IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
+                            CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                            Category = new Category()
+                            {
+                                Id = DbUtils.GetInt(reader, "CategoryId"),
+                                Name = DbUtils.GetString(reader, "CategoryName"),
+                            },
+                            UserProfile = new UserProfile()
+                            {
+                                Id = DbUtils.GetInt(reader, "AuthorId"),
+                                DisplayName = DbUtils.GetString(reader, "AuthorDisplayName"),
+                                ImageLocation = DbUtils.GetString(reader, "AuthorImage"),
+                                FirstName = DbUtils.GetString(reader, "AuthorFirstName"),
+                                LastName = DbUtils.GetString(reader, "AuthorLastName"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
+                            },
+                        });
+                    }
+                    reader.Close();
+                    return posts;
+                }
+            }
+        }
+
+            //public void EditPost(Post post)
+            //{
+            //    using (var conn = Connection)
+            //    {
+            //        conn.Open();
+            //        using (var cmd = conn.CreateCommand())
+            //        {
+            //            cmd.CommandText = @"
+            //                UPDATE Post
+            //                    SET 
+            //                        [Title] = @Title,
+            //                        Content = @Content,
+            //                        ImageLocation = @ImageLocation,
+            //                        CreateDateTime = @CreateDateTime,
+            //                        PublishDateTime = @PublishDateTime,
+            //                        IsApproved = @IsApproved,
+            //                        CategoryId = @CategoryId,
+            //                        UserProfileId = @UserProfileId
+            //                    WHERE Id = @id
+            //            ";
+
+            //            cmd.Parameters.AddWithValue("@Id", post.Id);
+            //            cmd.Parameters.AddWithValue("@Title", post.Title);
+            //            cmd.Parameters.AddWithValue("@Content", post.Content);
+            //            cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
+            //            cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
+            //            cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
+            //            cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
+            //            cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
+            //            cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+
+            //            cmd.ExecuteNonQuery();
+            //        }
+            //    }
+            //}
+
+            //public void DeletePost(int postId)
+            //{
+            //    using (SqlConnection conn = Connection)
+            //    {
+            //        conn.Open();
+
+            //        using (SqlCommand cmd = conn.CreateCommand())
+            //        {
+            //            cmd.CommandText = @"
+            //                    DELETE from Comment
+            //                    WHERE PostId = @id
+            //                    DELETE FROM Post
+            //                    WHERE Id = @id
+            //                ";
+
+            //            cmd.Parameters.AddWithValue("@id", postId);
+
+            //            cmd.ExecuteNonQuery();
+            //        }
+            //    }
+            //}
 
 
 
 
+        }
     }
-}
