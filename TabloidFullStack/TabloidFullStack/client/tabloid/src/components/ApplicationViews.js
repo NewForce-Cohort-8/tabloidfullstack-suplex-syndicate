@@ -10,6 +10,7 @@ import PostDetails from "./PostDetails.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
 import { CommentList } from "./comments/CommentList.js";
+
 import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
@@ -44,6 +45,11 @@ export default function ApplicationViews() {
 			<Route path='/Categories' element={<CategoryList />} />
 			{user.userTypeId == 1 ? (
 				<Route path='/UserProfiles' element={<UserProfileList />} />
+			) : (
+				""
+			)}
+			{user.userTypeId == 1 ? (
+				<Route path='/UserProfiles/:id' element={<UserProfile />} />
 			) : (
 				""
 			)}

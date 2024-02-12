@@ -42,6 +42,10 @@ export const getAllUserProfiles = () => {
     .then((res) => res.json());
 };
 
+export const getUserProfileById = (id) => {
+  return fetch(`${apiUrl}/api/userprofile/getById/${id}`)
+    .then((res) => res.json());
+};
 
 // return (
 //   <UserProfileContext.Provider value={{ isLoggedIn, login, logout, register,  }}>
