@@ -50,7 +50,7 @@ export const ReactivateUser = () => {
 			fluid
 			className='d-flex flex-column justify-content-center align-items-center'
 		>
-			<h3>Deactivate this user?</h3>
+			<h3>Reactivate this user?</h3>
 			<Card
 				style={{
 					width: "18rem",
