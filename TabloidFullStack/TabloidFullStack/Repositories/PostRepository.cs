@@ -185,7 +185,7 @@ namespace TabloidFullStack.Repositories
                             ORDER BY p.CreateDateTime desc
                     ";
 
-                    cmd.Parameters.AddWithValue("@userProfileId", "userProfileId");
+                    cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
 
                     var reader = cmd.ExecuteReader();
                     var posts = new List<Post>();
