@@ -20,7 +20,7 @@ import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
 import UserProfile from "./UserProfile/UserProfile.js";
 import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
-import { PostContainer } from "./post/PostContainer.js";
+import { PostContainer } from "./Posts/PostContainer.js";
 
 export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));

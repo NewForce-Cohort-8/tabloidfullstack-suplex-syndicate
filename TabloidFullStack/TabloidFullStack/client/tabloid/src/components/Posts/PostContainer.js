@@ -1,8 +1,8 @@
 import { Container } from "reactstrap";
 import { SearchByTag } from "./SearchByTag";
-import { PostList } from "../PostList";
 import { useEffect, useState } from "react";
 import { getAllPosts, getPost } from "../../Managers/PostManager";
+import { PostList } from "./PostList";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);

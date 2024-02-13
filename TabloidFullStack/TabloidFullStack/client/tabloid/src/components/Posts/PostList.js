@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { getAllPosts } from "../Managers/PostManager";
 import { Post } from "./Post.js";
 import { Container } from "reactstrap";
 
