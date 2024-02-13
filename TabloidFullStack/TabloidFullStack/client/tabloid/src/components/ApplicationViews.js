@@ -4,9 +4,10 @@ import Hello from "./Hello";
 import { TagList } from "./tags/TagList.js";
 import { AddTag } from "./tags/AddTag.js";
 import { DeleteTag } from "./tags/DeleteTag.js";
-import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
-import PostDetails from "./PostDetails.js";
+import PostList from "./Posts/PostList.js";
+import PostDetails from "./Posts/PostDetails.js";
+import { PostForm } from "./Posts/PostForm.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
 import { CommentList } from "./comments/CommentList.js";
@@ -15,6 +16,7 @@ import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
 import { CommentDetails } from "./comments/CommentDetails.js";
+import UserProfile from "./UserProfile/UserProfile.js";
 
 
 export default function ApplicationViews() {
@@ -43,8 +45,13 @@ export default function ApplicationViews() {
 				element={<CommentDetails />}
 			/>
 			<Route path='/Categories' element={<CategoryList />} />
-			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
-			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
+			{ user && user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
+			<Route path="/post" element={<PostList />} />
+
+			<Route path="/post/:id" element={<PostDetails />} />
+			<Route path="/postForm/" element={<PostForm />} />
+
+			{ user && user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 		</Routes>
 	);
 }

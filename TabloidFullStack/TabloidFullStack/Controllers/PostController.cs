@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TabloidFullStack.Models;
 using TabloidFullStack.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,8 +37,12 @@ namespace TabloidFullStack.Controllers
 
         // POST api/<PostController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(Post post) 
         {
+            post.CreateDateTime = DateTime.Now;
+            _postRepository.Add(post);
+            return CreatedAtAction("Get", new { id = post.Id }, post);
+
         }
 
         // PUT api/<PostController>/5

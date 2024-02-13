@@ -32,19 +32,22 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 							<NavItem>
 								<NavLink tag={RRNavLink} to='/'>Home</NavLink>
 							</NavItem>
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/post">Posts</NavLink>
-              </NavItem>
+							<NavItem>
+								<NavLink tag={RRNavLink} to="/post">Posts</NavLink>
+							</NavItem>
+							<NavItem>
+								<NavLink tag={RRNavLink} to="/postForm">New Post</NavLink>
+							</NavItem>
 							<NavItem>
 								<NavLink tag={RRNavLink} to='/Tags'>Tag Management</NavLink>
 							</NavItem>
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
-             </NavItem>  
-            </>
+							<NavItem>
+								<NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
+							</NavItem>  
+							</>
 						)}
 						{isLoggedIn && 
-						 user.userTypeId == 1  && (
+						 user && user.userTypeId == 1  && (
 							<NavItem>
 								<NavLink tag={RRNavLink} to="/userprofiles">
 									User Profiles</NavLink>
