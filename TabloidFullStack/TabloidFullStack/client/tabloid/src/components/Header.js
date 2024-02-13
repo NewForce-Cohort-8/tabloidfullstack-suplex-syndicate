@@ -50,14 +50,14 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 										Category Management{" "}
 									</NavLink>
 								</NavItem>
+								{user && user.userTypeId == 1 && (
+									<NavItem>
+										<NavLink tag={RRNavLink} to='/userprofiles'>
+											User Profiles
+										</NavLink>
+									</NavItem>
+								)}
 							</>
-						)}
-						{isLoggedIn && user && user.userTypeId == 1 && (
-							<NavItem>
-								<NavLink tag={RRNavLink} to='/userprofiles'>
-									User Profiles
-								</NavLink>
-							</NavItem>
 						)}
 					</Nav>
 

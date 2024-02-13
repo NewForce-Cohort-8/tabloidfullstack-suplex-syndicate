@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getAllPosts } from "../Managers/PostManager";
+// import { getAllPosts } from "../Managers/PostManager";
 import { Post } from "./Post.js";
+import { PostForm } from "./PostForm.js";
+import { getAllPosts } from "../../Managers/PostManager.js";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -17,6 +19,7 @@ const PostList = () => {
     <div className="container">
       <div className="row justify-content-center">
         <div className="cards-column">
+
           {posts.map((post) => (
             <Post key={post.id} post={post} />
           ))}
