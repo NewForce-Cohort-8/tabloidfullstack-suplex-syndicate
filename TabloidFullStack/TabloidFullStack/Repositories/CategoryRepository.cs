@@ -40,6 +40,8 @@ namespace TabloidFullStack.Repositories
                 }
             }
         }
+
+
         public void Add(Category category)
         {
             using (var conn = Connection)

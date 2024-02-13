@@ -11,7 +11,7 @@ import PostDetails from "./PostDetails.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
 import { CommentList } from "./comments/CommentList.js";
-
+import UserProfile from "./UserProfile/UserProfile.js";
 import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
@@ -31,6 +31,8 @@ export default function ApplicationViews() {
 			<Route path='/post/:id' element={<PostDetails />} />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
+			<Route path='/Categories' element={<CategoryList />} />
+      <	Route path="/categories/form" element={<AddCategory />} />
 			<Route
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}
@@ -43,8 +45,7 @@ export default function ApplicationViews() {
 				path='/Post/:postId/Comments/:commentId'
 				element={<CommentDetails />}
 			/>
-			<Route path='/Categories' element={<CategoryList />} />
-      <Route path="/categories/form" element={<AddCategory />} />
+
 			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
 			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 		</Routes>
