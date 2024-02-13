@@ -26,16 +26,16 @@ namespace TabloidFullStack.Models
 
         [Required]
         public int CategoryId { get; set; }
+        public Category? Category { get; set; }
 
-        //public int Category Category { get; set; }
 
 
         [Required]
         public int UserProfileId { get; set; }
 
-        public UserProfile UserProfile { get; set; }
+        public UserProfile? UserProfile { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<Comment>? Comments { get; set; }
 
     }
 }
