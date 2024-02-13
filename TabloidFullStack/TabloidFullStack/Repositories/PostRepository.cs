@@ -117,6 +117,7 @@ namespace TabloidFullStack.Repositories
                                 Id = DbUtils.GetInt(reader, "CategoryId"),
                                 Name = DbUtils.GetString(reader, "CategoryName"),
                             },
+                            UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                             UserProfile = new UserProfile()
                             {
                                 Id = DbUtils.GetInt(reader, "AuthorId"),
