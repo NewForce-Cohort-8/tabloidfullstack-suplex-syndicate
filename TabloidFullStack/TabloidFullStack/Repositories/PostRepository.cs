@@ -21,7 +21,6 @@ namespace TabloidFullStack.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    //We need to add actual category after its model is created
                     cmd.CommandText = @"
                     SELECT p.Id AS PostId, p.Title, p.CategoryId, p.Content, p.ImageLocation AS HeaderImage, p.CreateDateTime, p.PublishDateTime, p.IsApproved, 
 
@@ -56,6 +55,7 @@ namespace TabloidFullStack.Repositories
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                             PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
                             IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
+                            UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                             UserProfile = new UserProfile()
                             {
                                 Id = DbUtils.GetInt(reader, "AuthorId"),
@@ -119,6 +119,7 @@ namespace TabloidFullStack.Repositories
                                 Id = DbUtils.GetInt(reader, "CategoryId"),
                                 Name = DbUtils.GetString(reader, "CategoryName"),
                             },
+                            UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                             UserProfile = new UserProfile()
                             {
                                 Id = DbUtils.GetInt(reader, "AuthorId"),
