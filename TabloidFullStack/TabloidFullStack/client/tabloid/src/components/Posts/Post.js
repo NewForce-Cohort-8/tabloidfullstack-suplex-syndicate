@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardImg, CardBody, CardFooter, Button } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { getPostTags } from "../Managers/PostTagManager";
-import { PostTagBadge } from "./postTags/PostTagBadge";
+import { PostTagBadge } from "../postTags/PostTagBadge";
+import { getPostTags } from "../../Managers/PostTagManager";
 
 export const Post = ({ post }) => {
 	const [postTags, setPostTags] = useState([]);

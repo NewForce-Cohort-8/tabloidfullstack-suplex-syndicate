@@ -4,9 +4,10 @@ import Hello from "./Hello";
 import { TagList } from "./tags/TagList.js";
 import { AddTag } from "./tags/AddTag.js";
 import { DeleteTag } from "./tags/DeleteTag.js";
-import PostList from "./PostList";
 import { CategoryList } from "./categories/CategoryList.js";
-import PostDetails from "./PostDetails.js";
+import PostList from "./Posts/PostList.js";
+import PostDetails from "./Posts/PostDetails.js";
+import { PostForm } from "./Posts/PostForm.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
 import { CommentList } from "./comments/CommentList.js";
@@ -31,6 +32,7 @@ export default function ApplicationViews() {
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
 			<Route path='/post' element={<PostList />} />
 			<Route path='/post/:id' element={<PostDetails />} />
+			<Route path='/postForm/' element={<PostForm />} />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route

@@ -20,11 +20,11 @@ function App() {
     return (
         <Router>
             <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-            {isLoggedIn ?
-                <ApplicationViews />
-                :
+            {isLoggedIn ? (
+                <ApplicationViews isLoggedIn={isLoggedIn} />
+            ) : (
                 <Authorize setIsLoggedIn={setIsLoggedIn} />
-            }
+            )}
             
         </Router>
     );
