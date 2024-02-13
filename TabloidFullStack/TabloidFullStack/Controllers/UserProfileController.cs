@@ -48,6 +48,13 @@ namespace TabloidFullStack.Controllers
             return Ok(profiles);
         }
 
+        [HttpGet("GetByStatusId/{id}")]
+        public IActionResult GetByStatusId(int id)
+        {
+            var profiles = _userRepository.GetByStatusId(id);
+            return Ok(profiles);
+        }
+
         [HttpPost]
         public IActionResult Post(UserProfile userProfile)
         {

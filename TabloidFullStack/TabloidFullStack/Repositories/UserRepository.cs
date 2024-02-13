@@ -63,6 +63,62 @@ namespace TabloidFullStack.Repositories
             }
         }
 
+        public List<UserProfile> GetByStatusId(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               ut.Name AS UserTypeName, us.Name AS UserStatusName
+                          FROM UserProfile up
+                               LEFT JOIN UserType ut on up.UserTypeId = ut.Id
+                               LEFT JOIN UserStatus us on up.UserStatusId = us.Id
+                          WHERE up.UserStatusId = @id
+                         ORDER BY up.DisplayName";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+             
+
+                    var reader = cmd.ExecuteReader();
+
+                    var profiles = new List<UserProfile>();
+                    while (reader.Read())
+                    {
+                        profiles.Add(new UserProfile()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirstName = DbUtils.GetString(reader, "FirstName"),
+                            LastName = DbUtils.GetString(reader, "LastName"),
+                            DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                            ImageLocation = DbUtils.GetString(reader, "ImageLocation"),
+                            UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                            UserType = new UserType()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                Name = DbUtils.GetString(reader, "UserTypeName"),
+                            },
+                            UserStatusId = DbUtils.GetInt(reader, "UserStatusId"),
+                            UserStatus = new UserStatus()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserStatusId"),
+                                Name = DbUtils.GetString(reader, "UserStatusName"),
+                            }
+                        });
+                    }
+                    reader.Close();
+
+                    return profiles;
+                }
+            }
+        }
+
         public UserProfile GetByEmail(string email)
         {
             using (var conn = Connection)

@@ -13,6 +13,9 @@ export const UserProfileRow = ({ user }) => {
 		if (e.target.id.startsWith("deactivate")) {
 			navigate(`/UserProfiles/${userId}/Deactivate`);
 		}
+		if (e.target.id.startsWith("reactivate")) {
+			navigate(`/UserProfiles/${userId}/Reactivate`);
+		}
 	};
 	return (
 		<tr>
@@ -37,7 +40,13 @@ export const UserProfileRow = ({ user }) => {
 						Deactivate
 					</Button>
 				) : (
-					""
+					<Button
+						color='success'
+						id={`reactivate--${user.id}`}
+						onClick={(e) => handleNavigate(e)}
+					>
+						Reactivate
+					</Button>
 				)}
 			</td>
 		</tr>
