@@ -1,6 +1,8 @@
 import { Container } from "reactstrap";
 import { SearchByTag } from "./SearchByTag";
-import PostList from "../PostList";
+import { PostList } from "../PostList";
+import { useEffect, useState } from "react";
+import { getAllPosts, getPost } from "../../Managers/PostManager";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);
@@ -8,11 +10,14 @@ export const PostContainer = () => {
 	const [searchTerms, setSearchTerms] = useState("");
 
 	const getPosts = () => {
-		getAllPosts().then((allPosts) => setPosts(allPosts));
+		return getAllPosts().then((allPosts) => setPosts(allPosts));
 	};
 
 	useEffect(() => {
 		getPosts();
+		getAllPosts().then((posts) => setFilteredPosts(posts));
+	}, []);
+	useEffect(() => {
 		if (searchTerms) {
 			const searchedPosts = posts.filter((post) => {
 				return post.tags.find((tag) => {
@@ -20,7 +25,7 @@ export const PostContainer = () => {
 				});
 			});
 			setFilteredPosts(searchedPosts);
-		} else {
+		} else if (!searchTerms) {
 			setFilteredPosts(posts);
 		}
 	}, [searchTerms]);
@@ -28,7 +33,7 @@ export const PostContainer = () => {
 	return (
 		<Container>
 			<SearchByTag setSearchTerms={setSearchTerms} />
-			<PostList />
+			<PostList filteredPosts={filteredPosts} />
 		</Container>
 	);
 };

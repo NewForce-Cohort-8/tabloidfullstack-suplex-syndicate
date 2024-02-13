@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardImg, CardBody, CardFooter, Button } from "reactstrap";
+import {
+	Card,
+	CardImg,
+	CardBody,
+	CardFooter,
+	Button,
+	Col,
+	CardHeader,
+	CardTitle,
+	CardSubtitle,
+} from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { getPostTags } from "../Managers/PostTagManager";
 import { PostTagBadge } from "./postTags/PostTagBadge";
@@ -15,26 +25,31 @@ export const Post = ({ post }) => {
 	}, [post]);
 
 	const navigate = useNavigate();
+	const [date] = post.publishDateTime.split("T");
+	const [year, month, day] = date.split("-");
+	const formattedDate = `${month}/${day}/${year}`;
 	return (
-		<Card className='m-4'>
-			<p className='text-left px-2'>
-				Posted by: {post.userProfile.firstName} {post.userProfile.lastName}
-			</p>
-			<p className='text-left px-2'>
-				Author Display Name: {post.userProfile.displayName}
-			</p>
-			<p className='text-left px-2'>
-				Category: {post.categoryId} Published on: {post.publishDateTime}
-			</p>
-			<CardImg top src={post.imageLocation} alt={post.title} />
-			<CardBody>
-				<p>
-					<Link to={`/post/${post.id}`}>
-						<strong>{post.title}</strong>
-					</Link>
-				</p>
-				<p>{post.content}</p>
-			</CardBody>
+		<Card
+			className='m-4'
+			style={{
+				width: "40rem",
+			}}
+		>
+			<CardHeader className='d-flex flex-row'>
+				<Col>
+					<div>{post?.userProfile?.fullName}</div>
+					<div>@{post?.userProfile?.displayName}</div>
+				</Col>
+				<Col className='text-end'>{formattedDate}</Col>
+			</CardHeader>
+			<CardImg top src={post.imageLocation} alt={post.title} className='mb-2' />
+			<CardTitle tag='h5' className='mx-3'>
+				<Link to={`/post/${post.id}`}>
+					<strong>{post.title}</strong>
+				</Link>
+			</CardTitle>
+			<CardSubtitle className='mx-3'>{post?.category?.name}</CardSubtitle>
+			<CardBody>{post.content}</CardBody>
 			{postTags.length > 0 ? (
 				<CardFooter className='d-flex'>
 					<h6 className='me-2'>Tags:</h6>

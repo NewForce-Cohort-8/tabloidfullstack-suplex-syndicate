@@ -39,5 +39,7 @@ namespace TabloidFullStack.Models
 
         public List<Tag>? Tags { get; set; }
 
+        public Category? Category { get; set; }
+
     }
 }
