@@ -59,5 +59,18 @@ namespace TabloidFullStack.Controllers
                 new { email = userProfile.Email },
                 userProfile);
         }
+
+
+        [HttpPut("UpdateUserStatus/{id}")]
+        public IActionResult Put(int id, UserProfile user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            _userRepository.UpdateStatusId(user);
+            return NoContent();
+        }
     }
 }

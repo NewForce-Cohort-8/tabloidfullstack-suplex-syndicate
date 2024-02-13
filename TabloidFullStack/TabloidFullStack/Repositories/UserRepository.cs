@@ -16,11 +16,12 @@ namespace TabloidFullStack.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                    cmd.CommandText = @"
-                        SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
-                               ut.Name AS UserTypeName
+                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
-                               LEFT JOIN UserType ut ON up.UserTypeId = ut.Id
+                               LEFT JOIN UserType ut on up.UserTypeId = ut.Id
+                               LEFT JOIN UserStatus us on up.UserStatusId = us.Id
                          ORDER BY up.DisplayName";
 
                     // DbUtils.AddParameter(cmd, "@email", email);
@@ -46,6 +47,12 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserTypeId"),
                                 Name = DbUtils.GetString(reader, "UserTypeName"),
+                            },
+                            UserStatusId = DbUtils.GetInt(reader, "UserStatusId"),
+                            UserStatus = new UserStatus()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserStatusId"),
+                                Name = DbUtils.GetString(reader, "UserStatusName"),
                             }
                         });
                     }
@@ -65,10 +72,11 @@ namespace TabloidFullStack.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
-                               ut.Name AS UserTypeName
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
+                               LEFT JOIN UserStatus us on up.UserStatusId = us.Id
                          WHERE Email = @email";
 
                     DbUtils.AddParameter(cmd, "@email", email);
@@ -92,6 +100,12 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserTypeId"),
                                 Name = DbUtils.GetString(reader, "UserTypeName"),
+                            },
+                            UserStatusId = DbUtils.GetInt(reader, "UserStatusId"),
+                            UserStatus = new UserStatus()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserStatusId"),
+                                Name = DbUtils.GetString(reader, "UserStatusName"),
                             }
                         };
                     }
@@ -111,10 +125,11 @@ namespace TabloidFullStack.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId,
-                               ut.Name AS UserTypeName
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
+                               LEFT JOIN UserStatus us on up.UserStatusId = us.Id
                          WHERE up.Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", Id);
@@ -138,6 +153,12 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserTypeId"),
                                 Name = DbUtils.GetString(reader, "UserTypeName"),
+                            },
+                            UserStatusId = DbUtils.GetInt(reader, "UserStatusId"),
+                            UserStatus = new UserStatus()
+                            {
+                                Id = DbUtils.GetInt(reader, "UserStatusId"),
+                                Name = DbUtils.GetString(reader, "UserStatusName"),
                             }
                         };
                     }
@@ -159,7 +180,7 @@ namespace TabloidFullStack.Repositories
                                                                  Email, CreateDateTime, ImageLocation, UserTypeId)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirstName, @LastName, @DisplayName, 
-                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId)";
+                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId, @UserStatusId)";
                     DbUtils.AddParameter(cmd, "@FirstName", userProfile.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", userProfile.LastName);
                     DbUtils.AddParameter(cmd, "@DisplayName", userProfile.DisplayName);
@@ -167,8 +188,29 @@ namespace TabloidFullStack.Repositories
                     DbUtils.AddParameter(cmd, "@CreateDateTime", userProfile.CreateDateTime);
                     DbUtils.AddParameter(cmd, "@ImageLocation", userProfile.ImageLocation);
                     DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
+                    DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserStatusId);
 
                     userProfile.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void UpdateStatusId(UserProfile user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE UserProfile
+                           SET UserStatusId = @UserStatusId
+                           WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@UserStatusId", user.UserStatusId);
+                    DbUtils.AddParameter(cmd, "@Id", user.Id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { getAllUserProfiles } from "../../Managers/UserProfileManager";
 import { Link } from "react-router-dom";
+import { Container, Table } from "reactstrap";
+import { UserProfileRow } from "./UserProfileRow";
 
 export default function UserProfileList() {
-  const [userProfiles, setUserProfiles] = useState([]);
+	const [userProfiles, setUserProfiles] = useState([]);
 
-  useEffect(() => {
-    getAllUserProfiles().then(setUserProfiles);
-  }, []);
+	useEffect(() => {
+		getAllUserProfiles().then((users) => setUserProfiles(users));
+	}, []);
 
-  return (
-    <div>
-      <h2>User Profiles</h2>
-      <div>
-        {userProfiles.map((user) => (
-          <>
-          <p key={user.id} className="row justify-content-center">
-            {user.fullName} - {user.displayName} - {user.userType.name}
-          </p>
-          <div className="text-center">
-          <Link to={`/userprofiles/${user.id}`} className="text-center"> <button className="btn btn-primary">View Details</button> </Link>
-          </div>
-          <br />
-          </>
-        ))}
-      </div>
-    </div>
-  );
+	return (
+		<Container>
+			<h2>User Profiles</h2>
+			<Table>
+				<thead>
+					<tr>
+						<th>Full Name</th>
+						<th>Display Name</th>
+						<th>User Type</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{userProfiles.map((user) => (
+						<UserProfileRow user={user} key={user.id} />
+					))}
+				</tbody>
+			</Table>
+		</Container>
+	);
 }

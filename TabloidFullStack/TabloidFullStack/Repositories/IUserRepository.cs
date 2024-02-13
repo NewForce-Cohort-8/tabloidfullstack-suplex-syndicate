@@ -12,5 +12,6 @@ namespace TabloidFullStack.Repositories
         List<UserProfile> GetAllProfiles();
 
         UserProfile GetById(int Id);
+        void UpdateStatusId(UserProfile userProfile);
     }
 }
