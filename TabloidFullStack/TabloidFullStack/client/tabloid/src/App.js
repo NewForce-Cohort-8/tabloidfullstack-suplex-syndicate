@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import Authorize from "./components/Authorize";
 
 function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(true);
 
 	useEffect(() => {
 		if (!localStorage.getItem("userProfile")) {
@@ -18,7 +18,7 @@ function App() {
 		<Router>
 			<Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
 			{isLoggedIn ? (
-				<ApplicationViews />
+				<ApplicationViews isLoggedIn={isLoggedIn} />
 			) : (
 				<Authorize setIsLoggedIn={setIsLoggedIn} />
 			)}

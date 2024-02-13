@@ -15,7 +15,7 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggle = () => setIsOpen(!isOpen);
 
-	const user= JSON.parse(localStorage.getItem("userProfile"));
+	const user = JSON.parse(localStorage.getItem("userProfile"));
 
 	return (
 		<div>
@@ -29,26 +29,35 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 						{/* When isLoggedIn === true, we will render the Home link */}
 						{isLoggedIn && (
 							<>
-							<NavItem>
-								<NavLink tag={RRNavLink} to='/'>Home</NavLink>
-							</NavItem>
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/post">Posts</NavLink>
-              </NavItem>
-							<NavItem>
-								<NavLink tag={RRNavLink} to='/Tags'>Tag Management</NavLink>
-							</NavItem>
-              <NavItem>
-                <NavLink tag={RRNavLink} to="/Categories"> Category Management </NavLink>
-             </NavItem>  
-            </>
-						)}
-						{isLoggedIn && 
-						 user.userTypeId == 1  && (
-							<NavItem>
-								<NavLink tag={RRNavLink} to="/userprofiles">
-									User Profiles</NavLink>
-							    </NavItem>
+								<NavItem>
+									<NavLink tag={RRNavLink} to='/'>
+										Home
+									</NavLink>
+								</NavItem>
+								<NavItem>
+									<NavLink tag={RRNavLink} to='/post'>
+										Posts
+									</NavLink>
+								</NavItem>
+								<NavItem>
+									<NavLink tag={RRNavLink} to='/Tags'>
+										Tag Management
+									</NavLink>
+								</NavItem>
+								<NavItem>
+									<NavLink tag={RRNavLink} to='/Categories'>
+										{" "}
+										Category Management{" "}
+									</NavLink>
+								</NavItem>
+								{user && user.userTypeId == 1 && (
+									<NavItem>
+										<NavLink tag={RRNavLink} to='/userprofiles'>
+											User Profiles
+										</NavLink>
+									</NavItem>
+								)}
+							</>
 						)}
 					</Nav>
 
@@ -89,4 +98,4 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 			</Navbar>
 		</div>
 	);
-}
+};

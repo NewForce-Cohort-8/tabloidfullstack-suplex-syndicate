@@ -20,53 +20,55 @@ import UserProfile from "./UserProfile/UserProfile.js";
 import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 
-export default function ApplicationViews() {
+export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
-	return (
-		<Routes>
-			<Route path='/' element={<Hello />} />
-			<Route path='/Tags' element={<TagList />} />
-			<Route path='/Tags/Add' element={<AddTag />} />
-			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
-			<Route path='/Tags/Edit/:id' element={<EditTag />} />
-			<Route path='/post' element={<PostList />} />
-			<Route path='/post/:id' element={<PostDetails />} />
-			<Route path='/Post/:postId/Comments' element={<CommentList />} />
-			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
-			<Route
-				path='/Post/:postId/Comments/Delete/:commentId'
-				element={<DeleteComment />}
-			/>
-			<Route
-				path='/Post/:postId/Comments/Edit/:commentId'
-				element={<EditComment />}
-			/>
-			<Route
-				path='/Post/:postId/Comments/:commentId'
-				element={<CommentDetails />}
-			/>
-			<Route path='/Categories' element={<CategoryList />} />
-			{user.userTypeId == 1 ? (
-				<>
-					<Route path='/UserProfiles' element={<UserProfileList />} />
-					<Route
-						path='/UserProfiles/:userId/Deactivate'
-						element={<DeactivateUser />}
-					/>
-					<Route
-						path='/UserProfiles/:userId/Reactivate'
-						element={<ReactivateUser />}
-					/>
-				</>
-			) : (
-				""
-			)}
-			{user.userTypeId == 1 ? (
-				<Route path='/UserProfiles/:id' element={<UserProfile />} />
-			) : (
-				""
-			)}
-			<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
-		</Routes>
-	);
+	if (isLoggedIn) {
+		return (
+			<Routes>
+				<Route path='/' element={<Hello />} />
+				<Route path='/Tags' element={<TagList />} />
+				<Route path='/Tags/Add' element={<AddTag />} />
+				<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
+				<Route path='/Tags/Edit/:id' element={<EditTag />} />
+				<Route path='/post' element={<PostList />} />
+				<Route path='/post/:id' element={<PostDetails />} />
+				<Route path='/Post/:postId/Comments' element={<CommentList />} />
+				<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
+				<Route
+					path='/Post/:postId/Comments/Delete/:commentId'
+					element={<DeleteComment />}
+				/>
+				<Route
+					path='/Post/:postId/Comments/Edit/:commentId'
+					element={<EditComment />}
+				/>
+				<Route
+					path='/Post/:postId/Comments/:commentId'
+					element={<CommentDetails />}
+				/>
+				<Route path='/Categories' element={<CategoryList />} />
+				{user && user.userTypeId == 1 ? (
+					<>
+						<Route path='/UserProfiles' element={<UserProfileList />} />
+						<Route
+							path='/UserProfiles/:userId/Deactivate'
+							element={<DeactivateUser />}
+						/>
+						<Route
+							path='/UserProfiles/:userId/Reactivate'
+							element={<ReactivateUser />}
+						/>
+					</>
+				) : (
+					""
+				)}
+				{user && user.userTypeId == 1 ? (
+					<Route path='/UserProfiles/:id' element={<UserProfile />} />
+				) : (
+					""
+				)}
+				<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
+			</Routes>
+		);
+	}
 }
