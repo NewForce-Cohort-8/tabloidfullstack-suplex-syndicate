@@ -45,13 +45,13 @@ export default function ApplicationViews() {
 				element={<CommentDetails />}
 			/>
 			<Route path='/Categories' element={<CategoryList />} />
-			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
+			{ user && user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
 			<Route path="/post" element={<PostList />} />
 
 			<Route path="/post/:id" element={<PostDetails />} />
 			<Route path="/postForm/" element={<PostForm />} />
 
-			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
+			{ user && user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 		</Routes>
 	);
 }

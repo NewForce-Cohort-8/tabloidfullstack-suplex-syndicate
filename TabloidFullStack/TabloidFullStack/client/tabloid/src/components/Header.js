@@ -47,7 +47,7 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 							</>
 						)}
 						{isLoggedIn && 
-						 user.userTypeId == 1  && (
+						 user && user.userTypeId == 1  && (
 							<NavItem>
 								<NavLink tag={RRNavLink} to="/userprofiles">
 									User Profiles</NavLink>
