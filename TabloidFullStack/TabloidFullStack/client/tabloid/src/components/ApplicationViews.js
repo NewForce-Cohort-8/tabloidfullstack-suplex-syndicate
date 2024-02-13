@@ -46,7 +46,7 @@ export default function ApplicationViews() {
 				element={<CommentDetails />}
 			/>
 			<Route path='/Categories' element={<CategoryList />} />
-			{user.userTypeId == 1 ? (
+			{user && user.userTypeId == 1 ? (
 				<>
 					<Route path='/UserProfiles' element={<UserProfileList />} />
 					<Route
@@ -61,7 +61,7 @@ export default function ApplicationViews() {
 			) : (
 				""
 			)}
-			{user.userTypeId == 1 ? (
+			{user && user.userTypeId == 1 ? (
 				<Route path='/UserProfiles/:id' element={<UserProfile />} />
 			) : (
 				""
