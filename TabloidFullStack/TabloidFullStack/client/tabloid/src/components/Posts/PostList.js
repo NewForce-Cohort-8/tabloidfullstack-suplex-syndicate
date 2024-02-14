@@ -1,32 +1,13 @@
 import React, { useState, useEffect } from "react";
-// import { getAllPosts } from "../Managers/PostManager";
 import { Post } from "./Post.js";
-import { PostForm } from "./PostForm.js";
-import { getAllPosts } from "../../Managers/PostManager.js";
+import { Container } from "reactstrap";
 
-const PostList = () => {
-  const [posts, setPosts] = useState([]);
-
-  const getPosts = () => {
-    getAllPosts().then(allPosts => setPosts(allPosts)); 
-  };
-
-  useEffect(() => {
-    getPosts();
-  }, []); 
-
-  return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="cards-column">
-
-          {posts.map((post) => (
-            <Post key={post.id} post={post} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+export const PostList = ({ filteredPosts }) => {
+	return (
+		<Container fluid className='d-flex flex-column align-items-center'>
+			{filteredPosts.map((post) => (
+				<Post key={post.id} post={post} />
+			))}
+		</Container>
+	);
 };
-
-export default PostList;

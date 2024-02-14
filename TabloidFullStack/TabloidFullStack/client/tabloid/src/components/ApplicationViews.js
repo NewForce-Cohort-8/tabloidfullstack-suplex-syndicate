@@ -20,8 +20,9 @@ import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
 import UserProfile from "./UserProfile/UserProfile.js";
 import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
+import { PostContainer } from "./Posts/PostContainer.js";
 
-export default function ApplicationViews() {
+export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	return (
 		<Routes>
@@ -30,7 +31,7 @@ export default function ApplicationViews() {
 			<Route path='/Tags/Add' element={<AddTag />} />
 			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
-			<Route path='/post' element={<PostList />} />
+			<Route path='/post' element={<PostContainer />} />
 			<Route path='/post/:id' element={<PostDetails />} />
 			<Route path='/postForm/' element={<PostForm />} />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
