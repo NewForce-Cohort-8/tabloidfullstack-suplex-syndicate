@@ -6,7 +6,6 @@ import { AddTag } from "./tags/AddTag.js";
 import { DeleteTag } from "./tags/DeleteTag.js";
 import { AddCategory } from "./categories/CategoryForm.js";
 import { CategoryList } from "./categories/CategoryList.js";
-import PostList from "./Posts/PostList.js";
 import PostDetails from "./Posts/PostDetails.js";
 import { PostForm } from "./Posts/PostForm.js";
 import { EditTag } from "./tags/EditTag.js";
@@ -22,6 +21,7 @@ import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 import { PostContainer } from "./Posts/PostContainer.js";
 import { UserPosts } from "./Posts/UserPosts.js";
+import { PostList } from "./Posts/PostList.js";
 
 export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
