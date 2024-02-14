@@ -8,7 +8,8 @@ export const Post = ({ post }) => {
     <Card className="m-4">
       <p className="text-left px-2">Posted by: {post.userProfile?.firstName} {post.userProfile?.lastName}</p>
       <p className="text-left px-2">Author Display Name: {post.userProfile?.displayName}</p>
-      <p className="text-left px-2">Category: {post.categoryId} Published on: {post.publishDateTime}</p>
+      <p className="text-left px-2">Category: {post.category?.name} 
+      <p className="text-left px-2"></p>Published on: {post.publishDateTime}</p>
       <CardImg top src={post.imageLocation} alt={post.title} />
       <CardBody>
         <p>

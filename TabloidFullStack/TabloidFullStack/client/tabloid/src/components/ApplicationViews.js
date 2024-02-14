@@ -17,6 +17,7 @@ import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
 import { CommentDetails } from "./comments/CommentDetails.js";
 import UserProfile from "./UserProfile/UserProfile.js";
+import { UserPosts } from "./Posts/UserPosts.js";
 
 
 export default function ApplicationViews() {
@@ -50,6 +51,7 @@ export default function ApplicationViews() {
 
 			<Route path="/post/:id" element={<PostDetails />} />
 			<Route path="/postForm/" element={<PostForm />} />
+			<Route path="/my-posts" element={<UserPosts /> } />
 
 			{ user && user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 		</Routes>
