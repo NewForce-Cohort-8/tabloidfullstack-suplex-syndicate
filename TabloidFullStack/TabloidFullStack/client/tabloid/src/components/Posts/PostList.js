@@ -6,6 +6,7 @@ export const PostList = ({
 	filteredPosts,
 	subscriptions,
 	setSubscriptions,
+	setPosts,
 }) => {
 	return (
 		<Container fluid className='d-flex flex-column align-items-center'>
@@ -15,6 +16,7 @@ export const PostList = ({
 					post={post}
 					subscriptions={subscriptions}
 					setSubscriptions={setSubscriptions}
+					setPosts={setPosts}
 				/>
 			))}
 		</Container>

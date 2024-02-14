@@ -17,38 +17,14 @@ import {
 	addSubscription,
 	getAllSubscriptions,
 } from "../../Managers/SubscriptionManager";
+import { getAllPosts } from "../../Managers/PostManager";
+import { SubscriptionButton } from "../subscriptions/SubscriptionButton";
 
-export const Post = ({ post, subscriptions, setSubscriptions }) => {
+export const Post = ({ post, subscriptions, setSubscriptions, setPosts }) => {
 	const [postTags, setPostTags] = useState([]);
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const getTags = () => {
 		return getPostTags(post.id).then((tags) => setPostTags(tags));
-	};
-	const hasSubscription = () => {
-		if (subscriptions && subscriptions.length > 0) {
-			return subscriptions.find(
-				(subscription) =>
-					subscription.subscriberUserProfileId == user.id &&
-					subscription.providerUserProfileId == post.userProfileId
-			);
-		} else {
-			return false;
-		}
-	};
-
-	const handleSubscriptionClick = (e) => {
-		e.preventDefault();
-		if (e.target.id.startsWith("add-subscription")) {
-			const subscriptionToSendToApi = {
-				subscriberUserProfileId: parseInt(user.id),
-				providerUserProfileId: post.userProfileId,
-				beginDateTime: new Date(),
-			};
-
-			return addSubscription(subscriptionToSendToApi).then((res) =>
-				getAllSubscriptions((res) => setSubscriptions(res))
-			);
-		}
 	};
 
 	useEffect(() => {
@@ -70,26 +46,12 @@ export const Post = ({ post, subscriptions, setSubscriptions }) => {
 				<Col>
 					<div className='d-flex flex-row'>
 						<div className='me-2'>{post?.userProfile?.fullName}</div>
-						{!hasSubscription() ? (
-							<Button
-								outline
-								color='success'
-								size='sm'
-								id={`add-subscription--${post.id}`}
-								onClick={(e) => handleSubscriptionClick(e)}
-							>
-								Subscribe
-							</Button>
-						) : (
-							<Button
-								outline
-								color='danger'
-								size='sm'
-								id={`remove-subscription--${post.id}`}
-							>
-								Unsubscribe
-							</Button>
-						)}
+						<SubscriptionButton
+							post={post}
+							user={user}
+							subscriptions={subscriptions}
+							setSubscriptions={setSubscriptions}
+						/>
 					</div>
 					<div>@{post?.userProfile?.displayName}</div>
 				</Col>

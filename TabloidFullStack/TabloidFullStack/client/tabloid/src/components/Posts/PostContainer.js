@@ -46,6 +46,7 @@ export const PostContainer = () => {
 				filteredPosts={filteredPosts}
 				subscriptions={subscriptions}
 				setSubscriptions={setSubscriptions}
+				setPosts={setPosts}
 			/>
 		</Container>
 	);
