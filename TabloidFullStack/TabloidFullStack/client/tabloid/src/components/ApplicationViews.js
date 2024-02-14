@@ -60,28 +60,6 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path="/my-posts" element={<UserPosts /> } />
 
 			{ user && user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
-
-			{user && user.userTypeId == 1 ? (
-				<>
-					<Route path='/UserProfiles' element={<UserProfileList />} />
-					<Route
-						path='/UserProfiles/:userId/Deactivate'
-						element={<DeactivateUser />}
-					/>
-					<Route
-						path='/UserProfiles/:userId/Reactivate'
-						element={<ReactivateUser />}
-					/>
-				</>
-			) : (
-				""
-			)}
-			{user && user.userTypeId == 1 ? (
-				<Route path='/UserProfiles/:id' element={<UserProfile />} />
-			) : (
-				""
-			)}
-			<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
 		</Routes>
 	);
 }
