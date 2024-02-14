@@ -1,0 +1,45 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using TabloidFullStack.Models;
+using TabloidFullStack.Repositories;
+
+namespace TabloidFullStack.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SubscriptionController : ControllerBase
+    {
+        //private readonly ITagRepository;
+        private readonly ISubscriptionRepository _subscriptionRepository;
+
+        public SubscriptionController(ISubscriptionRepository subscriptionRepository)
+        {
+            //_tagProfileRepository = tagProfileRepository;
+            _subscriptionRepository = subscriptionRepository;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_subscriptionRepository.GetAll());
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var subscription = _subscriptionRepository.GetById(id);
+            if (subscription == null)
+            {
+                return NotFound();
+            }
+            return Ok(subscription);
+        }
+
+        [HttpPost]
+        public IActionResult Post(Subscription subscription)
+        {
+            _subscriptionRepository.Add(subscription);
+            return CreatedAtAction("Get", new { id = subscription.Id }, subscription);
+        }
+    }
+}
