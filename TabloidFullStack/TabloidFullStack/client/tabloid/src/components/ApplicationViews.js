@@ -18,7 +18,6 @@ import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
 import { CommentDetails } from "./comments/CommentDetails.js";
 import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
-import UserProfile from "./UserProfile/UserProfile.js";
 import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 
