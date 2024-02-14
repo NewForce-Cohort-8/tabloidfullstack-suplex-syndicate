@@ -48,6 +48,13 @@ namespace TabloidFullStack.Controllers
             return Ok(profiles);
         }
 
+        [HttpGet("GetByStatusId/{id}")]
+        public IActionResult GetByStatusId(int id)
+        {
+            var profiles = _userRepository.GetByStatusId(id);
+            return Ok(profiles);
+        }
+
         [HttpPost]
         public IActionResult Post(UserProfile userProfile)
         {
@@ -58,6 +65,19 @@ namespace TabloidFullStack.Controllers
                 "GetByEmail",
                 new { email = userProfile.Email },
                 userProfile);
+        }
+
+
+        [HttpPut("UpdateUserStatus/{id}")]
+        public IActionResult Put(int id, UserProfile user)
+        {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            _userRepository.UpdateStatusId(user);
+            return NoContent();
         }
     }
 }

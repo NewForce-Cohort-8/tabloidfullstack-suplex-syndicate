@@ -26,7 +26,6 @@ namespace TabloidFullStack.Models
 
         [Required]
         public int CategoryId { get; set; }
-        public Category? Category { get; set; }
 
 
 
@@ -36,6 +35,10 @@ namespace TabloidFullStack.Models
         public UserProfile? UserProfile { get; set; }
 
         public List<Comment>? Comments { get; set; }
+
+        public List<Tag>? Tags { get; set; }
+
+        public Category? Category { get; set; }
 
     }
 }

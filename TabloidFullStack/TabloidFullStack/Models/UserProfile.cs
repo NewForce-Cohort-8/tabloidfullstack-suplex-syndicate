@@ -32,7 +32,9 @@ namespace TabloidFullStack.Models
 
         [Required]
         public int UserTypeId { get; set; }
-        public UserType UserType { get; set; }
+        public int UserStatusId { get; set; }
+        public UserType? UserType { get; set; }
+        public UserStatus? UserStatus { get; set; }
 
         public string FullName
         {
