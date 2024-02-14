@@ -16,7 +16,7 @@ namespace TabloidFullStack.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT s.Id, s.SubscriberId, s.ProviderId, s.BeginDateTime, s.EndDateTime,
+                        SELECT s.Id, s.SubscriberUserProfileId, s.ProviderUserProfileId, s.BeginDateTime, s.EndDateTime
 
                         FROM Subscription s
                     ;";
@@ -30,10 +30,10 @@ namespace TabloidFullStack.Repositories
                         Subscription subscription = new Subscription()
                         {
                             Id = DbUtils.GetInt(reader, "Id"),
-                            SubscriberId = DbUtils.GetInt(reader, "SubscriberId"),
-                            ProviderId = DbUtils.GetInt(reader,"ProviderId"),
+                            SubscriberUserProfileId = DbUtils.GetInt(reader, "SubscriberUserProfileId"),
+                            ProviderUserProfileId = DbUtils.GetInt(reader,"ProviderUserProfileId"),
                             BeginDateTime = DbUtils.GetDateTime(reader, "BeginDateTime"),
-                            EndDateTime = DbUtils.GetDateTime(reader, "EndDateTime")
+                            EndDateTime = DbUtils.GetNullableDateTime(reader, "EndDateTime")
                         };
 
                         subscriptions.Add(subscription);
@@ -53,7 +53,7 @@ namespace TabloidFullStack.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT s.Id, s.SubscriberId, s.ProviderId, s.BeginDateTime, s.EndDateTime,
+                        SELECT s.Id, s.SubscriberUserProfileId, s.ProviderUserProfileId, s.BeginDateTime, s.EndDateTime
 
                         FROM Subscription s 
                         WHERE Id = @id";
@@ -69,10 +69,48 @@ namespace TabloidFullStack.Repositories
                         subscription = new Subscription()
                         {
                             Id = DbUtils.GetInt(reader, "Id"),
-                            SubscriberId = DbUtils.GetInt(reader, "SubscriberId"),
-                            ProviderId = DbUtils.GetInt(reader, "ProviderId"),
+                            SubscriberUserProfileId = DbUtils.GetInt(reader, "SubscriberUserProfileId"),
+                            ProviderUserProfileId = DbUtils.GetInt(reader, "ProviderUserProfileId"),
                             BeginDateTime = DbUtils.GetDateTime(reader, "BeginDateTime"),
-                            EndDateTime = DbUtils.GetDateTime(reader, "EndDateTime")
+                            EndDateTime = DbUtils.GetNullableDateTime(reader, "EndDateTime")
+                        };
+
+                    }
+                    reader.Close();
+                    return subscription;
+                }
+            }
+        }
+
+        public Subscription GetByProviderId(int subscriberId, int providerId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT s.Id, s.SubscriberUserProfileId, s.ProviderUserProfileId, s.BeginDateTime, s.EndDateTime
+
+                        FROM Subscription s 
+                        WHERE SubscriberId = @subscriberId AND ProviderId = @providerId";
+
+                    DbUtils.AddParameter(cmd, "@subscriberid", subscriberId);
+                    DbUtils.AddParameter(cmd, "@providerId", providerId);
+
+                    Subscription subscription = null;
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        subscription = new Subscription()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            SubscriberUserProfileId = DbUtils.GetInt(reader, "SubscriberUserProfileId"),
+                            ProviderUserProfileId = DbUtils.GetInt(reader, "ProviderUserProfileId"),
+                            BeginDateTime = DbUtils.GetDateTime(reader, "BeginDateTime"),
+                            EndDateTime = DbUtils.GetNullableDateTime(reader, "EndDateTime")
                         };
 
                     }
@@ -89,10 +127,10 @@ namespace TabloidFullStack.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Subscription (SubscriberId, ProviderId, BeginDateTime, EndDateTime) OUTPUT INSERTED.ID VALUES (@Name)";
+                    cmd.CommandText = @"INSERT INTO Subscription (SubscriberUserProfileId, ProviderUserProfileId, BeginDateTime, EndDateTime) OUTPUT INSERTED.ID VALUES (@SubscriberUserProfileId, @ProviderUserProfileId, @BeginDateTime, @EndDateTime)";
 
-                    DbUtils.AddParameter(cmd, "@SubscriberId", subscription.SubscriberId);
-                    DbUtils.AddParameter(cmd, "@ProviderId", subscription.ProviderId);
+                    DbUtils.AddParameter(cmd, "@SubscriberUserProfileId", subscription.SubscriberUserProfileId);
+                    DbUtils.AddParameter(cmd, "@ProviderUserProfileId", subscription.ProviderUserProfileId);
                     DbUtils.AddParameter(cmd, "@BeginDateTime", subscription.BeginDateTime);
                     DbUtils.AddParameter(cmd, "@EndDateTime", subscription.EndDateTime);
                     subscription.Id = (int)cmd.ExecuteScalar();
