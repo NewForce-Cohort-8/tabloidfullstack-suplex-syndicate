@@ -1,0 +1,1 @@
+﻿UPDATE UserProfile SET UserStatusId = 1;

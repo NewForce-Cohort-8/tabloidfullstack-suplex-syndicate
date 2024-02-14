@@ -4,10 +4,11 @@ import Hello from "./Hello";
 import { TagList } from "./tags/TagList.js";
 import { AddTag } from "./tags/AddTag.js";
 import { DeleteTag } from "./tags/DeleteTag.js";
-import PostList from "./PostList";
 import { AddCategory } from "./categories/CategoryForm.js";
 import { CategoryList } from "./categories/CategoryList.js";
-import PostDetails from "./PostDetails.js";
+import PostList from "./Posts/PostList.js";
+import PostDetails from "./Posts/PostDetails.js";
+import { PostForm } from "./Posts/PostForm.js";
 import { EditTag } from "./tags/EditTag.js";
 import UserProfileList from "./UserProfile/UserProfileList";
 import { CommentList } from "./comments/CommentList.js";
@@ -16,7 +17,10 @@ import { AddComment } from "./comments/AddComment.js";
 import { DeleteComment } from "./comments/DeleteComment.js";
 import { EditComment } from "./comments/EditComment.js";
 import { CommentDetails } from "./comments/CommentDetails.js";
-
+import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
+import UserProfile from "./UserProfile/UserProfile.js";
+import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
+import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 
 export default function ApplicationViews() {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -29,6 +33,7 @@ export default function ApplicationViews() {
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
 			<Route path='/post' element={<PostList />} />
 			<Route path='/post/:id' element={<PostDetails />} />
+			<Route path='/postForm/' element={<PostForm />} />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route path='/Categories' element={<CategoryList />} />
@@ -37,17 +42,36 @@ export default function ApplicationViews() {
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}
 			/>
-      <Route
+			<Route
 				path='/Post/:postId/Comments/Edit/:commentId'
 				element={<EditComment />}
 			/>
-      <Route
+			<Route
 				path='/Post/:postId/Comments/:commentId'
 				element={<CommentDetails />}
 			/>
 
-			{ user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
-			{ user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
+			{user && user.userTypeId == 1 ? (
+				<>
+					<Route path='/UserProfiles' element={<UserProfileList />} />
+					<Route
+						path='/UserProfiles/:userId/Deactivate'
+						element={<DeactivateUser />}
+					/>
+					<Route
+						path='/UserProfiles/:userId/Reactivate'
+						element={<ReactivateUser />}
+					/>
+				</>
+			) : (
+				""
+			)}
+			{user && user.userTypeId == 1 ? (
+				<Route path='/UserProfiles/:id' element={<UserProfile />} />
+			) : (
+				""
+			)}
+			<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
 		</Routes>
 	);
 }
