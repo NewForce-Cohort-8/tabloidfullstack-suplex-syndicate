@@ -26,7 +26,7 @@ export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	return (
 		<Routes>
-			<Route path='/' element={<Hello />} />
+			<Route path='/' element={<PostContainer />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
 			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
@@ -37,7 +37,7 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route path='/Categories' element={<CategoryList />} />
-      <	Route path="/categories/form" element={<AddCategory />} />
+			<Route path='/categories/form' element={<AddCategory />} />
 			<Route
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}

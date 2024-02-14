@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getAllPosts, getPost } from "../../Managers/PostManager";
 import { PostList } from "./PostList";
 import { getAllSubscriptions } from "../../Managers/SubscriptionManager";
+import { SubscribedPostsList } from "../subscriptions/SubscribedPostsList";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);
@@ -39,15 +40,28 @@ export const PostContainer = () => {
 	useEffect(() => {
 		getSubscriptions();
 	}, []);
-	return (
-		<Container>
-			<SearchByTag setSearchTerms={setSearchTerms} />
-			<PostList
-				filteredPosts={filteredPosts}
-				subscriptions={subscriptions}
-				setSubscriptions={setSubscriptions}
-				setPosts={setPosts}
-			/>
-		</Container>
-	);
+	if (window.location.pathname === "/") {
+		return (
+			<Container fluid className='d-flex flex-column align-items-center my-2'>
+				<h2>Posts by authors you are subscribed to</h2>
+				<SearchByTag setSearchTerms={setSearchTerms} />
+				<SubscribedPostsList
+					searchTerms={searchTerms}
+					subscriptions={subscriptions}
+					setSubscriptions={setSubscriptions}
+				/>
+			</Container>
+		);
+	} else {
+		return (
+			<Container>
+				<SearchByTag setSearchTerms={setSearchTerms} />
+				<PostList
+					filteredPosts={filteredPosts}
+					subscriptions={subscriptions}
+					setSubscriptions={setSubscriptions}
+				/>
+			</Container>
+		);
+	}
 };

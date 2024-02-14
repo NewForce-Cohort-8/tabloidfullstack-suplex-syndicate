@@ -24,8 +24,14 @@ namespace TabloidFullStack.Controllers
             return Ok(_subscriptionRepository.GetAll());
         }
 
+        [HttpGet("GetSubscribedPosts/{subscriberUserProfileId}")]
+        public IActionResult Get(int subscriberUserProfileId)
+        {
+            return Ok(_subscriptionRepository.GetSubscribedPosts(subscriberUserProfileId));
+        }
+
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetPosts(int id)
         {
             var subscription = _subscriptionRepository.GetById(id);
             if (subscription == null)
