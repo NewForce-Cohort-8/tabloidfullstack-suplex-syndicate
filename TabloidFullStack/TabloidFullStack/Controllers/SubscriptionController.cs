@@ -58,5 +58,17 @@ namespace TabloidFullStack.Controllers
             _subscriptionRepository.Add(subscription);
             return CreatedAtAction("Get", new { id = subscription.Id }, subscription);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Subscription subscription)
+        {
+            if (id != subscription.Id)
+            {
+                return BadRequest();
+            }
+
+            _subscriptionRepository.Update(subscription);
+            return NoContent();
+        }
     }
 }
