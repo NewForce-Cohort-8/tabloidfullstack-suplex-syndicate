@@ -32,13 +32,15 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/Tags/Add' element={<AddTag />} />
 			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
+			<Route path="/post" element={<PostList />} />
 			<Route path='/post' element={<PostContainer />} />
-			<Route path='/post/:id' element={<PostDetails />} />
-			<Route path='/postForm/' element={<PostForm />} />
+			<Route path="/post/:id" element={<PostDetails />} />
+			<Route path="/postForm/" element={<PostForm />} />
+			<Route path="/my-posts" element={<UserPosts /> } />
+			<Route path='/Categories' element={<CategoryList />} />
+      		<Route path="/categories/form" element={<AddCategory />} />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
-			<Route path='/Categories' element={<CategoryList />} />
-      <	Route path="/categories/form" element={<AddCategory />} />
 			<Route
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}
@@ -51,15 +53,24 @@ export default function ApplicationViews({ isLoggedIn }) {
 				path='/Post/:postId/Comments/:commentId'
 				element={<CommentDetails />}
 			/>
-			<Route path='/Categories' element={<CategoryList />} />
-			{ user && user.userTypeId == 1? <Route path="/UserProfiles" element={<UserProfileList />} />:""}
-			<Route path="/post" element={<PostList />} />
-
-			<Route path="/post/:id" element={<PostDetails />} />
-			<Route path="/postForm/" element={<PostForm />} />
-			<Route path="/my-posts" element={<UserPosts /> } />
+			{user && user.userTypeId == 1 ? (
+				<>
+					<Route path='/UserProfiles' element={<UserProfileList />} />
+					<Route
+						path='/UserProfiles/:userId/Deactivate'
+						element={<DeactivateUser />}
+					/>
+					<Route
+						path='/UserProfiles/:userId/Reactivate'
+						element={<ReactivateUser />}
+					/>
+				</>
+			) : (
+				""
+				)}
 
 			{ user && user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
+			<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
 		</Routes>
 	);
 }
