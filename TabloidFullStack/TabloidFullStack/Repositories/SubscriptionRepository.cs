@@ -138,7 +138,7 @@ namespace TabloidFullStack.Repositories
                            
                         up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, 
                         up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, 
-                        up.ImageLocation AS AuthorImage,
+                        up.ImageLocation AS AuthorImage, up.UserTypeId, up.UserStatusId,
 
                         pt.Id AS PostTagId, pt.PostId AS PostTagPostId, pt.TagId AS PostTagTagId,
                            
@@ -155,6 +155,7 @@ namespace TabloidFullStack.Repositories
                         WHERE s.SubscriberUserProfileId = @subscriberUserProfileId 
                         AND IsApproved = 1 
                         AND PublishDateTime < SYSDATETIME()
+                        AND up.UserStatusId = 1
                         ORDER BY PublishDateTime DESC
                     ;";
 
@@ -193,7 +194,9 @@ namespace TabloidFullStack.Repositories
                                     ImageLocation = DbUtils.GetString(reader, "AuthorImage"),
                                     FirstName = DbUtils.GetString(reader, "AuthorFirstName"),
                                     LastName = DbUtils.GetString(reader, "AuthorLastName"),
-                                    CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
+                                    CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime"),
+                                    UserTypeId = DbUtils.GetInt(reader,"UserTypeId"),
+                                    UserStatusId = DbUtils.GetInt(reader, "UserStatusId")
                                 },
                                 Tags = new List<Tag>()
                             };

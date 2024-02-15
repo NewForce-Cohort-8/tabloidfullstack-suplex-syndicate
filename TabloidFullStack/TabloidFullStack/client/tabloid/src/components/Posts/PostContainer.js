@@ -5,6 +5,7 @@ import { getAllPosts, getPost } from "../../Managers/PostManager";
 import { PostList } from "./PostList";
 import { getAllSubscriptions } from "../../Managers/SubscriptionManager";
 import { SubscribedPostsList } from "../subscriptions/SubscribedPostsList";
+import Hello from "../Hello";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);
@@ -41,17 +42,21 @@ export const PostContainer = () => {
 		getSubscriptions();
 	}, []);
 	if (window.location.pathname === "/") {
-		return (
-			<Container fluid className='d-flex flex-column align-items-center my-2'>
-				<h2>Posts by authors you are subscribed to</h2>
-				<SearchByTag setSearchTerms={setSearchTerms} />
-				<SubscribedPostsList
-					searchTerms={searchTerms}
-					subscriptions={subscriptions}
-					setSubscriptions={setSubscriptions}
-				/>
-			</Container>
-		);
+		if (!subscriptions.length) {
+			return <Hello />;
+		} else {
+			return (
+				<Container fluid className='d-flex flex-column align-items-center my-2'>
+					<h2>Posts by authors you are subscribed to</h2>
+					<SearchByTag setSearchTerms={setSearchTerms} />
+					<SubscribedPostsList
+						searchTerms={searchTerms}
+						subscriptions={subscriptions}
+						setSubscriptions={setSubscriptions}
+					/>
+				</Container>
+			);
+		}
 	} else {
 		return (
 			<Container>
