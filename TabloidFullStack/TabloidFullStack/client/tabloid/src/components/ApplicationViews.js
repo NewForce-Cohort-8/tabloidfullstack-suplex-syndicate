@@ -32,7 +32,6 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/Tags/Add' element={<AddTag />} />
 			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
-			<Route path="/post" element={<PostList />} />
 			<Route path='/post' element={<PostContainer />} />
 			<Route path="/post/:id" element={<PostDetails />} />
 			<Route path="/postForm/" element={<PostForm />} />
