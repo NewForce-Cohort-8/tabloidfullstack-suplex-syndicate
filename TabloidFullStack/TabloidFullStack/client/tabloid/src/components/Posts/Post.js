@@ -13,13 +13,20 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { PostTagBadge } from "../postTags/PostTagBadge";
 import { getPostTags } from "../../Managers/PostTagManager";
+import {
+	addSubscription,
+	getAllSubscriptions,
+} from "../../Managers/SubscriptionManager";
+import { getAllPosts } from "../../Managers/PostManager";
+import { SubscriptionButton } from "../subscriptions/SubscriptionButton";
 
-export const Post = ({ post }) => {
+export const Post = ({ post, subscriptions, setSubscriptions, setPosts }) => {
 	const [postTags, setPostTags] = useState([]);
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const getTags = () => {
 		return getPostTags(post.id).then((tags) => setPostTags(tags));
 	};
+
 	useEffect(() => {
 		getTags();
 	}, [post]);
@@ -37,7 +44,15 @@ export const Post = ({ post }) => {
 		>
 			<CardHeader className='d-flex flex-row'>
 				<Col>
-					<div>{post?.userProfile?.fullName}</div>
+					<div className='d-flex flex-row'>
+						<div className='me-2'>{post?.userProfile?.fullName}</div>
+						<SubscriptionButton
+							post={post}
+							user={user}
+							subscriptions={subscriptions}
+							setSubscriptions={setSubscriptions}
+						/>
+					</div>
 					<div>@{post?.userProfile?.displayName}</div>
 				</Col>
 				<Col className='text-end'>{formattedDate}</Col>
@@ -86,6 +101,7 @@ export const Post = ({ post }) => {
 				{user.id == post.userProfile.id ? (
 					<Button
 						outline
+						className='me-2'
 						onClick={(e) => {
 							e.preventDefault();
 							navigate(`/Post/${post.id}/Tags`);
