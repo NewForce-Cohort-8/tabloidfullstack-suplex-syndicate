@@ -19,13 +19,13 @@ export const CategoryRow = ({ category, post }) => {
 			<th scope='row'>{category.id}</th>
 			<td>{category.name}</td>
 			<td>
-				{/* <Button
+				<Button
 					id={`delete-category--${category.id}`}
 					color='danger'
 					onClick={(e) => handleNavigate(e)}
 				>
 					Delete
-				</Button> */}
+				</Button>
 				<Button id={`edit-category--${category.id}`} onClick={(e) => handleNavigate(e)}>
 					Edit
 				</Button>
