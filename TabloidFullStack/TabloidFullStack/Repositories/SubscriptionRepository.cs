@@ -1,4 +1,5 @@
-﻿using TabloidFullStack.Models;
+﻿using Microsoft.Extensions.Hosting;
+using TabloidFullStack.Models;
 using TabloidFullStack.Utils;
 
 namespace TabloidFullStack.Repositories
@@ -116,6 +117,105 @@ namespace TabloidFullStack.Repositories
                     }
                     reader.Close();
                     return subscription;
+                }
+            }
+        }
+
+        public List<Post> GetSubscribedPosts(int subscriberUserProfileId) {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT s.Id, s.SubscriberUserProfileId, s.ProviderUserProfileId, s.BeginDateTime, s.EndDateTime,
+
+                        p.Id as SubscribedPostId, p.Title, p.CategoryId, p.Content, p.ImageLocation AS HeaderImage, 
+                        p.CreateDateTime, p.PublishDateTime, p.IsApproved,
+
+                        
+                        c.Id as CategoryCategoryId, c.Name as CategoryName,
+                           
+                        up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, 
+                        up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, 
+                        up.ImageLocation AS AuthorImage, up.UserTypeId, up.UserStatusId,
+
+                        pt.Id AS PostTagId, pt.PostId AS PostTagPostId, pt.TagId AS PostTagTagId,
+                           
+                        t.Id as TagId, t.Name as TagName
+
+                        FROM Subscription s
+                        LEFT JOIN Post p ON p.UserProfileId = s.ProviderUserProfileId
+                        LEFT JOIN Category c ON p.CategoryId = c.id
+                        LEFT JOIN UserProfile up ON p.UserProfileId = up.id
+                        LEFT JOIN PostTag pt ON p.Id = pt.PostId
+                        LEFT JOIN Tag t ON pt.TagId = t.Id 
+
+                        
+                        WHERE s.SubscriberUserProfileId = @subscriberUserProfileId 
+                        AND IsApproved = 1 
+                        AND PublishDateTime < SYSDATETIME()
+                        AND up.UserStatusId = 1
+                        ORDER BY PublishDateTime DESC
+                    ;";
+
+                    DbUtils.AddParameter(cmd, "@subscriberUserProfileId", subscriberUserProfileId);
+
+                    var subscribedPosts = new List<Post>();
+
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var postId = DbUtils.GetInt(reader, "SubscribedPostId");
+                        var existingPost = subscribedPosts.FirstOrDefault(p => p.Id == postId);
+                        if (existingPost == null)
+                        {
+                            existingPost = new Post()
+                            {
+                                Id = postId,
+                                Title = DbUtils.GetString(reader, "Title"),
+                                CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                                Category = new Category()
+                                {
+                                    Id = DbUtils.GetInt(reader, "CategoryId"),
+                                    Name = DbUtils.GetString(reader, "CategoryName")
+                                },
+                                Content = DbUtils.GetString(reader, "Content"),
+                                ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                                PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
+                                IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
+                                UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
+                                UserProfile = new UserProfile()
+                                {
+                                    Id = DbUtils.GetInt(reader, "AuthorId"),
+                                    DisplayName = DbUtils.GetString(reader, "AuthorDisplayName"),
+                                    ImageLocation = DbUtils.GetString(reader, "AuthorImage"),
+                                    FirstName = DbUtils.GetString(reader, "AuthorFirstName"),
+                                    LastName = DbUtils.GetString(reader, "AuthorLastName"),
+                                    CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime"),
+                                    UserTypeId = DbUtils.GetInt(reader,"UserTypeId"),
+                                    UserStatusId = DbUtils.GetInt(reader, "UserStatusId")
+                                },
+                                Tags = new List<Tag>()
+                            };
+                            subscribedPosts.Add(existingPost);
+                        }
+                        if (DbUtils.IsNotDbNull(reader, "PostTagId"))
+                        {
+                            existingPost.Tags.Add(new Tag()
+                            {
+                                Id = DbUtils.GetInt(reader, "TagId"),
+                                Name = DbUtils.GetString(reader, "TagName"),
+                            });
+                        }
+
+                        
+                    }
+
+                    reader.Close();
+                    return subscribedPosts;
                 }
             }
         }

@@ -4,6 +4,12 @@ export const getAllSubscriptions = () => {
 	return fetch(subscriptionApiUrl).then((res) => res.json());
 };
 
+export const getAllSubscribedPosts = (userId) => {
+	return fetch(`${subscriptionApiUrl}/GetSubscribedPosts/${userId}`).then(
+		(res) => res.json()
+	);
+};
+
 export const getSingleProviderSubscription = (subscriberId, providerId) => {
 	return fetch(`${subscriptionApiUrl}/${subscriberId}/${providerId}`).then(
 		(res) => res.json()
