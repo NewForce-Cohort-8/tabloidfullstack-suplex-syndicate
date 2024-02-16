@@ -187,7 +187,7 @@ namespace TabloidFullStack.Repositories
                                 ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                                 PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                                IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
+                                IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
                                 UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                                 UserProfile = new UserProfile()
                                 {
