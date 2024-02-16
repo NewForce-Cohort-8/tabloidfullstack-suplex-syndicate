@@ -20,13 +20,13 @@ export default function Register({setIsLoggedIn}) {
     if (password && password !== confirmPassword) {
       alert("Passwords don't match. Do better.");
     } else {
-      const userProfile = { firstName, lastName, displayName, imageLocation, email };
+      const userProfile = { firstName: firstName, lastName: lastName, displayName: displayName, imageLocation: imageLocation, email: email, userStatusId: 1, userTypeId: 2, createDateTime: new Date(), password: password };
       register(userProfile, password)
         .then(() => {
-          setIsLoggedIn(true)
-          navigate('/')
+          setIsLoggedIn(true);
+          navigate('/');
         });
-    }
+    };
  };
 
   return (
