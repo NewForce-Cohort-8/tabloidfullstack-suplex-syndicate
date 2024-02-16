@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Post } from "./Post.js";
 import { Container } from "reactstrap";
 
@@ -6,7 +5,6 @@ export const PostList = ({
 	filteredPosts,
 	subscriptions,
 	setSubscriptions,
-	setPosts,
 }) => {
 	return (
 		<Container fluid className='d-flex flex-column align-items-center'>
@@ -16,7 +14,6 @@ export const PostList = ({
 					post={post}
 					subscriptions={subscriptions}
 					setSubscriptions={setSubscriptions}
-					setPosts={setPosts}
 				/>
 			))}
 		</Container>
