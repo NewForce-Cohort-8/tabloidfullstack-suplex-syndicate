@@ -20,6 +20,7 @@ namespace TabloidFullStack.Repositories
                         SELECT s.Id, s.SubscriberUserProfileId, s.ProviderUserProfileId, s.BeginDateTime, s.EndDateTime
 
                         FROM Subscription s
+                        WHERE s.EndDateTime IS NULL
                     ;";
 
                     var subscriptions = new List<Subscription>();
@@ -153,10 +154,11 @@ namespace TabloidFullStack.Repositories
 
                         
                         WHERE s.SubscriberUserProfileId = @subscriberUserProfileId 
-                        AND IsApproved = 1 
-                        AND PublishDateTime < SYSDATETIME()
+                        AND p.IsApproved = 1
+                        AND p.PublishDateTime < SYSDATETIME()
                         AND up.UserStatusId = 1
-                        ORDER BY PublishDateTime DESC
+                        AND s.EndDateTime IS NULL
+                        ORDER BY p.PublishDateTime DESC
                     ;";
 
                     DbUtils.AddParameter(cmd, "@subscriberUserProfileId", subscriberUserProfileId);
@@ -185,7 +187,7 @@ namespace TabloidFullStack.Repositories
                                 ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                                 PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                                IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
+                                IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
                                 UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                                 UserProfile = new UserProfile()
                                 {
@@ -227,13 +229,43 @@ namespace TabloidFullStack.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Subscription (SubscriberUserProfileId, ProviderUserProfileId, BeginDateTime, EndDateTime) OUTPUT INSERTED.ID VALUES (@SubscriberUserProfileId, @ProviderUserProfileId, @BeginDateTime, @EndDateTime)";
+                    cmd.CommandText = @"
+                    INSERT INTO Subscription (SubscriberUserProfileId, ProviderUserProfileId, BeginDateTime, EndDateTime) 
+                    OUTPUT INSERTED.ID 
+                    VALUES (@SubscriberUserProfileId, @ProviderUserProfileId, @BeginDateTime, @EndDateTime)";
 
                     DbUtils.AddParameter(cmd, "@SubscriberUserProfileId", subscription.SubscriberUserProfileId);
                     DbUtils.AddParameter(cmd, "@ProviderUserProfileId", subscription.ProviderUserProfileId);
                     DbUtils.AddParameter(cmd, "@BeginDateTime", subscription.BeginDateTime);
                     DbUtils.AddParameter(cmd, "@EndDateTime", subscription.EndDateTime);
                     subscription.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void Update(Subscription subscription)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Subscription
+                           SET 
+                           SubscriberUserProfileId = @subscriberUserProfileId,
+                           ProviderUserProfileId = @providerUserProfileId,
+                           BeginDateTime = @beginDateTime,
+                           EndDateTime = @endDateTime
+                           WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", subscription.Id);
+                    DbUtils.AddParameter(cmd, "@subscriberUserProfileId", subscription.SubscriberUserProfileId);
+                    DbUtils.AddParameter(cmd, "@providerUserProfileId", subscription.ProviderUserProfileId);
+                    DbUtils.AddParameter(cmd, "@beginDateTime", subscription.BeginDateTime);
+                    DbUtils.AddParameter(cmd, "@endDateTime", subscription.EndDateTime);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
