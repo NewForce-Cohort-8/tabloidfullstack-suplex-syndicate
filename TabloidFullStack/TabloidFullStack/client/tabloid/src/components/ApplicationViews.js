@@ -7,6 +7,7 @@ import { DeleteTag } from "./tags/DeleteTag.js";
 import { AddCategory } from "./categories/CategoryForm.js";
 import { CategoryList } from "./categories/CategoryList.js";
 import { EditCategory } from "./categories/EditCategory.js";
+import { DeleteCategory } from "./categories/DeleteCategory.js";
 import PostList from "./Posts/PostList.js";
 import PostDetails from "./Posts/PostDetails.js";
 import { PostForm } from "./Posts/PostForm.js";
@@ -39,6 +40,7 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route path='/Categories' element={<CategoryList />} />
 			<Route path='/Categories/Edit/:id' element={<EditCategory />} />
+			<Route path='/Categories/Delete/:id' element={<DeleteCategory />} />
       <	Route path="/categories/form" element={<AddCategory />} />
 			<Route
 				path='/Post/:postId/Comments/Delete/:commentId'
