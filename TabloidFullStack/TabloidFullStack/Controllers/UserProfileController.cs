@@ -55,12 +55,16 @@ namespace TabloidFullStack.Controllers
             return Ok(profiles);
         }
 
-        [HttpPost]
-        public IActionResult Post(UserProfile userProfile)
+            [HttpPost]
+        public IActionResult Post(UserProfile userProfile)    //POST method to SET the UserStatusId IF one isn't set already.
         {
             userProfile.CreateDateTime = DateTime.Now;
             userProfile.UserTypeId = UserType.AUTHOR_ID;
             _userRepository.Add(userProfile);
+             if (userProfile.UserStatusId == 0)
+                {
+                    userProfile.UserStatusId = UserStatus.ACTIVE_ID;
+                }
             return CreatedAtAction(
                 "GetByEmail",
                 new { email = userProfile.Email },

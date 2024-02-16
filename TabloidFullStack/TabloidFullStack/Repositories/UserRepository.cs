@@ -17,7 +17,7 @@ namespace TabloidFullStack.Repositories
                 {
                    cmd.CommandText = @"
                          SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId, up.Password,
                                ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -53,7 +53,8 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserStatusId"),
                                 Name = DbUtils.GetString(reader, "UserStatusName"),
-                            }
+                            },
+                            Password = DbUtils.GetNullableString(reader, "Password")
                         });
                     }
                     reader.Close();
@@ -72,7 +73,7 @@ namespace TabloidFullStack.Repositories
                 {
                     cmd.CommandText = @"
                          SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId, up.Password,
                                ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -109,7 +110,8 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserStatusId"),
                                 Name = DbUtils.GetString(reader, "UserStatusName"),
-                            }
+                            },
+                            Password = DbUtils.GetNullableString(reader, "Password")
                         });
                     }
                     reader.Close();
@@ -128,7 +130,7 @@ namespace TabloidFullStack.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId, up.Password,
                                ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -162,7 +164,8 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserStatusId"),
                                 Name = DbUtils.GetString(reader, "UserStatusName"),
-                            }
+                            },
+                            Password = DbUtils.GetNullableString(reader, "Password")
                         };
                     }
                     reader.Close();
@@ -181,7 +184,7 @@ namespace TabloidFullStack.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, up.DisplayName, 
-                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId,
+                               up.Email, up.CreateDateTime, up.ImageLocation, up.UserTypeId, up.UserStatusId, up.Password,
                                ut.Name AS UserTypeName, us.Name AS UserStatusName
                           FROM UserProfile up
                                LEFT JOIN UserType ut on up.UserTypeId = ut.Id
@@ -215,7 +218,8 @@ namespace TabloidFullStack.Repositories
                             {
                                 Id = DbUtils.GetInt(reader, "UserStatusId"),
                                 Name = DbUtils.GetString(reader, "UserStatusName"),
-                            }
+                            },
+                            Password = DbUtils.GetNullableString(reader, "Password")
                         };
                     }
                     reader.Close();
@@ -226,30 +230,31 @@ namespace TabloidFullStack.Repositories
         }
 
         public void Add(UserProfile userProfile)
-        {
-            using (var conn = Connection)
             {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
+                using (var conn = Connection)
                 {
-                    cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, DisplayName, 
-                                                                 Email, CreateDateTime, ImageLocation, UserTypeId)
-                                        OUTPUT INSERTED.ID
-                                        VALUES (@FirstName, @LastName, @DisplayName, 
-                                                @Email, @CreateDateTime, @ImageLocation, @UserTypeId, @UserStatusId)";
-                    DbUtils.AddParameter(cmd, "@FirstName", userProfile.FirstName);
-                    DbUtils.AddParameter(cmd, "@LastName", userProfile.LastName);
-                    DbUtils.AddParameter(cmd, "@DisplayName", userProfile.DisplayName);
-                    DbUtils.AddParameter(cmd, "@Email", userProfile.Email);
-                    DbUtils.AddParameter(cmd, "@CreateDateTime", userProfile.CreateDateTime);
-                    DbUtils.AddParameter(cmd, "@ImageLocation", userProfile.ImageLocation);
-                    DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
-                    DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserStatusId);
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, DisplayName, 
+                                                                    Email, CreateDateTime, ImageLocation, UserTypeId, UserStatusId, Password)
+                                            OUTPUT INSERTED.ID
+                                            VALUES (@FirstName, @LastName, @DisplayName, 
+                                                    @Email, @CreateDateTime, @ImageLocation, @UserTypeId, @UserStatusId, @Password)";
+                        DbUtils.AddParameter(cmd, "@FirstName", userProfile.FirstName);
+                        DbUtils.AddParameter(cmd, "@LastName", userProfile.LastName);
+                        DbUtils.AddParameter(cmd, "@DisplayName", userProfile.DisplayName);
+                        DbUtils.AddParameter(cmd, "@Email", userProfile.Email);
+                        DbUtils.AddParameter(cmd, "@CreateDateTime", userProfile.CreateDateTime);
+                        DbUtils.AddParameter(cmd, "@ImageLocation", userProfile.ImageLocation);
+                        DbUtils.AddParameter(cmd, "@UserTypeId", userProfile.UserTypeId);
+                        DbUtils.AddParameter(cmd, "@UserStatusId", userProfile.UserStatusId);
+                        DbUtils.AddParameter(cmd, "@Password", DbUtils.ValueOrDBNull(userProfile.Password));
 
-                    userProfile.Id = (int)cmd.ExecuteScalar();
+                        userProfile.Id = (int)cmd.ExecuteScalar();
+                    }
                 }
             }
-        }
 
         public void UpdateStatusId(UserProfile user)
         {
