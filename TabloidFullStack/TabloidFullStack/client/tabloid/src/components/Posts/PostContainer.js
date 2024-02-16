@@ -3,16 +3,21 @@ import { SearchByTag } from "./SearchByTag";
 import { useEffect, useState } from "react";
 import { getAllPosts, getPost } from "../../Managers/PostManager";
 import { PostList } from "./PostList";
-import { getAllSubscriptions } from "../../Managers/SubscriptionManager";
+import {
+	getAllSubscribedPosts,
+	getAllSubscriptions,
+} from "../../Managers/SubscriptionManager";
 import { SubscribedPostsList } from "../subscriptions/SubscribedPostsList";
 import Hello from "../Hello";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);
+	const [subscribedPosts, setSubscribedPosts] = useState([]);
 	const [filteredPosts, setFilteredPosts] = useState([]);
+	const [filteredSubscribedPosts, setFilteredSubscribedPosts] = useState([]);
 	const [searchTerms, setSearchTerms] = useState("");
 	const [subscriptions, setSubscriptions] = useState([]);
-
+	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const getPosts = () => {
 		return getAllPosts().then((allPosts) => setPosts(allPosts));
 	};
@@ -21,10 +26,28 @@ export const PostContainer = () => {
 			setSubscriptions(subscriptions)
 		);
 	};
+
+	const getSubscribedPosts = () => {
+		return getAllSubscribedPosts(user.id).then((posts) =>
+			setSubscribedPosts(posts)
+		);
+	};
+	useEffect(() => {
+		getSubscriptions();
+	}, []);
+
+	useEffect(() => {
+		getSubscribedPosts();
+		getAllSubscribedPosts(user.id).then((posts) =>
+			setFilteredSubscribedPosts(posts)
+		);
+	}, [user.id]);
+
 	useEffect(() => {
 		getPosts();
 		getAllPosts().then((posts) => setFilteredPosts(posts));
 	}, []);
+
 	useEffect(() => {
 		if (searchTerms) {
 			const searchedPosts = posts.filter((post) => {
@@ -39,10 +62,20 @@ export const PostContainer = () => {
 	}, [searchTerms]);
 
 	useEffect(() => {
-		getSubscriptions();
-	}, []);
+		if (searchTerms) {
+			const searchedPosts = subscribedPosts.filter((post) => {
+				return post.tags.find((tag) => {
+					return tag.name.toLowerCase().startsWith(searchTerms.toLowerCase());
+				});
+			});
+			setFilteredSubscribedPosts(searchedPosts);
+		} else if (!searchTerms) {
+			setFilteredSubscribedPosts(subscribedPosts);
+		}
+	}, [searchTerms]);
+
 	if (window.location.pathname === "/") {
-		if (!subscriptions.length) {
+		if (!subscribedPosts.length) {
 			return <Hello />;
 		} else {
 			return (
@@ -53,11 +86,16 @@ export const PostContainer = () => {
 						searchTerms={searchTerms}
 						subscriptions={subscriptions}
 						setSubscriptions={setSubscriptions}
+						subscribedPosts={subscribedPosts}
+						setSubscribedPosts={setSubscribedPosts}
+						filteredSubscribedPosts={filteredSubscribedPosts}
+						setFilteredSubscribedPosts={setFilteredSubscribedPosts}
 					/>
 				</Container>
 			);
 		}
-	} else {
+	}
+	if (window.location.pathname === "/post") {
 		return (
 			<Container>
 				<SearchByTag setSearchTerms={setSearchTerms} />
@@ -65,6 +103,8 @@ export const PostContainer = () => {
 					filteredPosts={filteredPosts}
 					subscriptions={subscriptions}
 					setSubscriptions={setSubscriptions}
+					setSubscribedPosts={setSubscribedPosts}
+					setFilteredSubscribedPosts={setFilteredSubscribedPosts}
 				/>
 			</Container>
 		);
