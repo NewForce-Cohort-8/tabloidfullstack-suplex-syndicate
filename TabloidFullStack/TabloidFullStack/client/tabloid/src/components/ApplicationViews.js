@@ -28,7 +28,7 @@ export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	return (
 		<Routes>
-			<Route path='/' element={<Hello />} />
+			<Route path='/' element={<PostContainer />} />
 			<Route path='/Tags' element={<TagList />} />
 			<Route path='/Tags/Add' element={<AddTag />} />
 			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />

@@ -20,7 +20,7 @@ import {
 import { getAllPosts } from "../../Managers/PostManager";
 import { SubscriptionButton } from "../subscriptions/SubscriptionButton";
 
-export const Post = ({ post, subscriptions, setSubscriptions, setPosts }) => {
+export const Post = ({ post, subscriptions, setSubscriptions }) => {
 	const [postTags, setPostTags] = useState([]);
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const getTags = () => {
