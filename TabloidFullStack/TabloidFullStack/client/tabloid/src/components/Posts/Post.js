@@ -19,14 +19,19 @@ import {
 } from "../../Managers/SubscriptionManager";
 import { getAllPosts } from "../../Managers/PostManager";
 import { SubscriptionButton } from "../subscriptions/SubscriptionButton";
+import { ApprovePostButton } from "./ApprovePostButton";
 
 export const Post = ({
 	post,
 	subscriptions,
+	setPosts,
 	setSubscriptions,
 	subscribedPosts,
 	setSubscribedPosts,
+	setFilteredPosts,
 	setFilteredSubscribedPosts,
+	setUnapprovedPosts,
+	setViewUnapproved,
 }) => {
 	const [postTags, setPostTags] = useState([]);
 	const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -65,7 +70,22 @@ export const Post = ({
 					</div>
 					<div>@{post?.userProfile?.displayName}</div>
 				</Col>
-				<Col className='text-end'>{formattedDate}</Col>
+				<Col className='text-end'>
+					<div className='mb-1'>{formattedDate}</div>
+					{user &&
+					user.userTypeId == 1 &&
+					window.location.pathname !== `/post/${post.id}` ? (
+						<ApprovePostButton
+							post={post}
+							setPosts={setPosts}
+							setUnapprovedPosts={setUnapprovedPosts}
+							setFilteredPosts={setFilteredPosts}
+							setViewUnapproved={setViewUnapproved}
+						/>
+					) : (
+						""
+					)}
+				</Col>
 			</CardHeader>
 			<CardImg top src={post.imageLocation} alt={post.title} className='mb-2' />
 			<CardTitle tag='h5' className='mx-3'>

@@ -29,3 +29,7 @@ export const updatePost = (post) => {
 		body: JSON.stringify(post),
 	});
 };
+
+export const getUnapprovedPosts = () => {
+	return fetch("api/post/GetUnapprovedPosts").then((res) => res.json());
+};

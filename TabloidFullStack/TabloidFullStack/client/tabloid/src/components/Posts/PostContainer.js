@@ -1,7 +1,11 @@
 import { Container } from "reactstrap";
 import { SearchByTag } from "./SearchByTag";
 import { useEffect, useState } from "react";
-import { getAllPosts, getPost } from "../../Managers/PostManager";
+import {
+	getAllPosts,
+	getPost,
+	getUnapprovedPosts,
+} from "../../Managers/PostManager";
 import { PostList } from "./PostList";
 import {
 	getAllSubscribedPosts,
@@ -10,6 +14,7 @@ import {
 import { SubscribedPostsList } from "../subscriptions/SubscribedPostsList";
 import Hello from "../Hello";
 import { EditPost } from "./EditPost";
+import { ViewUnapprovedToggle } from "./ViewUnnapprovedToggle";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);
@@ -18,9 +23,14 @@ export const PostContainer = () => {
 	const [filteredSubscribedPosts, setFilteredSubscribedPosts] = useState([]);
 	const [searchTerms, setSearchTerms] = useState("");
 	const [subscriptions, setSubscriptions] = useState([]);
+	const [unapprovedPosts, setUnapprovedPosts] = useState([]);
+	const [viewUnapproved, setViewUnapproved] = useState(false);
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const getPosts = () => {
 		return getAllPosts().then((allPosts) => setPosts(allPosts));
+	};
+	const getAllUnapprovedPosts = () => {
+		return getUnapprovedPosts().then((posts) => setUnapprovedPosts(posts));
 	};
 	const getSubscriptions = () => {
 		return getAllSubscriptions().then((subscriptions) =>
@@ -46,7 +56,7 @@ export const PostContainer = () => {
 
 	useEffect(() => {
 		getPosts();
-		getAllPosts().then((posts) => setFilteredPosts(posts));
+		getAllUnapprovedPosts();
 	}, []);
 
 	useEffect(() => {
@@ -61,6 +71,14 @@ export const PostContainer = () => {
 			setFilteredPosts(posts);
 		}
 	}, [searchTerms]);
+
+	useEffect(() => {
+		if (viewUnapproved) {
+			setFilteredPosts(unapprovedPosts);
+		} else if (!viewUnapproved) {
+			setFilteredPosts(posts);
+		}
+	}, [viewUnapproved, posts]);
 
 	useEffect(() => {
 		if (searchTerms) {
@@ -99,13 +117,25 @@ export const PostContainer = () => {
 	if (window.location.pathname === "/post") {
 		return (
 			<Container>
+				{user && user.userTypeId == 1 ? (
+					<ViewUnapprovedToggle
+						setViewUnapproved={setViewUnapproved}
+						viewUnapproved={viewUnapproved}
+					/>
+				) : (
+					""
+				)}
 				<SearchByTag setSearchTerms={setSearchTerms} />
 				<PostList
 					filteredPosts={filteredPosts}
 					subscriptions={subscriptions}
+					setPosts={setPosts}
 					setSubscriptions={setSubscriptions}
 					setSubscribedPosts={setSubscribedPosts}
+					setFilteredPosts={setFilteredPosts}
 					setFilteredSubscribedPosts={setFilteredSubscribedPosts}
+					setUnapprovedPosts={setUnapprovedPosts}
+					setViewUnapproved={setViewUnapproved}
 				/>
 			</Container>
 		);
