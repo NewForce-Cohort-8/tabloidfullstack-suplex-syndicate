@@ -121,7 +121,6 @@ namespace TabloidFullStack.Repositories
                             LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
                             WHERE p.Id = @Id
-
                     ";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
@@ -140,7 +139,7 @@ namespace TabloidFullStack.Repositories
                             ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                             PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                            IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
+                            IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
                             CategoryId = DbUtils.GetInt(reader, "CategoryId"),
                             Category = new Category()
                             {
@@ -185,13 +184,49 @@ namespace TabloidFullStack.Repositories
                     cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
                     cmd.Parameters.AddWithValue("@PublishDateTime",DbUtils.ValueOrDBNull( post.PublishDateTime ));
                     cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
-                    cmd.Parameters.AddWithValue("@CategoryId", DbUtils.ValueOrDBNull(post.CategoryId));
+                    cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
                     cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
 
                     post.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
+
+        public void Update(Post post)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Post
+                           SET UserProfileId = @UserProfileId,
+                           Title = @Title,
+                           Content = @Content,
+                           ImageLocation = @ImageLocation,
+                           CreateDateTime = @CreateDateTime,
+                           PublishDateTime = @PublishDateTime,
+                           IsApproved = @IsApproved,
+                           CategoryId = @CategoryId
+                           WHERE Id = @id;";
+
+                    DbUtils.AddParameter(cmd, "@id", post.Id);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", post.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Title", post.Title);
+                    DbUtils.AddParameter(cmd, "@Content", post.Content);
+                    DbUtils.AddParameter(cmd, "@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
+                    DbUtils.AddParameter(cmd, "@CreateDateTime", post.CreateDateTime);
+                    DbUtils.AddParameter(cmd, "@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
+                    DbUtils.AddParameter(cmd, "@IsApproved", post.IsApproved);
+                    DbUtils.AddParameter(cmd, "@CategoryId", post.CategoryId);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
 
         public List<Post> GetPostByAuthor(int userProfileId)
         {
