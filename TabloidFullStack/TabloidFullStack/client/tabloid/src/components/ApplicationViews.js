@@ -24,7 +24,6 @@ import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 import { PostContainer } from "./Posts/PostContainer.js";
 import { UserPosts } from "./Posts/UserPosts.js";
-import { PostList } from "./Posts/PostList.js";
 
 export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
