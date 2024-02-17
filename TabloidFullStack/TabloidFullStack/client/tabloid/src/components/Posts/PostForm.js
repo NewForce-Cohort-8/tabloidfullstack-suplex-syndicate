@@ -32,14 +32,14 @@ export const PostForm = () => {
 		e.preventDefault();
 
 		const newPostToSendToAPI = {
-			Title: newPost.title,
-			Content: newPost.content,
-			ImageLocation: newPost.imageLocation,
-			PublishDateTime:
+			title: newPost.title,
+			content: newPost.content,
+			imageLocation: newPost.imageLocation,
+			publishDateTime:
 				newPost.publishDateTime == "" ? null : newPost.publishDateTime,
-			IsApproved: false,
-			CategoryId: newPost.categoryId,
-			UserProfileId: tabloidUserObject.id,
+			isApproved: false,
+			categoryId: newPost.categoryId,
+			userProfileId: tabloidUserObject.id,
 		};
 		if (tabloidUserObject.userTypeId == 1) {
 			newPostToSendToAPI.IsApproved = true;
