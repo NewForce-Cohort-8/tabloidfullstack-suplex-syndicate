@@ -51,8 +51,7 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 								</NavItem>
 								<NavItem>
 									<NavLink tag={RRNavLink} to='/Categories'>
-										{" "}
-										Category Management{" "}
+										Category Management
 									</NavLink>
 								</NavItem>
 								{user && user.userTypeId == 1 && (
