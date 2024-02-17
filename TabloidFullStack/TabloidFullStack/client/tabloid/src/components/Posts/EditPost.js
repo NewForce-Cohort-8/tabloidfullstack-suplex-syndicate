@@ -133,7 +133,7 @@ export const EditPost = () => {
 				<Button
 					color='primary'
 					className='me-2'
-					onClick={(e) => handleUpdate(e)}
+					onClick={(e) => {handleUpdate(e); navigate("/post");}}
 				>
 					Save
 				</Button>
