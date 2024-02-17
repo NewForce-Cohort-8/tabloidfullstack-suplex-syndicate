@@ -96,7 +96,7 @@ export const EditPost = () => {
 					<Label for='category'>Category</Label>
 					<Input
 						id='category'
-						name='categoryId'
+						name='category'
 						type='select'
 						value={post.categoryId}
 						onChange={(e) => handleOnChange(e)}
@@ -133,7 +133,7 @@ export const EditPost = () => {
 				<Button
 					color='primary'
 					className='me-2'
-					onClick={(e) => {handleUpdate(e); navigate("/post");}}
+					onClick={(e) => handleUpdate(e)}
 				>
 					Save
 				</Button>
