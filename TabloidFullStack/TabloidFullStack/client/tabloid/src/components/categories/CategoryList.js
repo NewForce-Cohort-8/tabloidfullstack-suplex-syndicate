@@ -39,12 +39,9 @@ export const CategoryList = () => {
 					</tr>
 				</thead>
         <tbody>
-          {categories.map((category) => (
-            <tr key={category.id}>
-              <td>{category.id}</td>
-              <td>{category.name}</td>
-            </tr>
-          ))}
+		{categories.map((category) => (
+						<CategoryRow key={category.id} category={category} />
+					))}
         </tbody>
 			</Table>
 

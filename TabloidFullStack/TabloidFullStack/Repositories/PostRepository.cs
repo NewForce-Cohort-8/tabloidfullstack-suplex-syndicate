@@ -68,7 +68,7 @@ namespace TabloidFullStack.Repositories
                                 ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                                 PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                                IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
+                                IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
                                 UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                                 UserProfile = new UserProfile()
                                 {
@@ -140,7 +140,7 @@ namespace TabloidFullStack.Repositories
                             ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                             PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                            IsApproved = DbUtils.IsDbNull(reader, "IsApproved"),
+                            IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
                             CategoryId = DbUtils.GetInt(reader, "CategoryId"),
                             Category = new Category()
                             {

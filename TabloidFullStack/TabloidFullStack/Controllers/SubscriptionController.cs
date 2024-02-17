@@ -24,8 +24,14 @@ namespace TabloidFullStack.Controllers
             return Ok(_subscriptionRepository.GetAll());
         }
 
+        [HttpGet("GetSubscribedPosts/{subscriberUserProfileId}")]
+        public IActionResult Get(int subscriberUserProfileId)
+        {
+            return Ok(_subscriptionRepository.GetSubscribedPosts(subscriberUserProfileId));
+        }
+
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetPosts(int id)
         {
             var subscription = _subscriptionRepository.GetById(id);
             if (subscription == null)
@@ -51,6 +57,18 @@ namespace TabloidFullStack.Controllers
         {
             _subscriptionRepository.Add(subscription);
             return CreatedAtAction("Get", new { id = subscription.Id }, subscription);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Subscription subscription)
+        {
+            if (id != subscription.Id)
+            {
+                return BadRequest();
+            }
+
+            _subscriptionRepository.Update(subscription);
+            return NoContent();
         }
     }
 }
