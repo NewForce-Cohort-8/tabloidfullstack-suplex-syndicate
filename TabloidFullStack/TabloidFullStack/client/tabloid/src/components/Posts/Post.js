@@ -109,16 +109,28 @@ export const Post = ({
 					Add Comment
 				</Button>
 				{user.id == post.userProfile.id ? (
-					<Button
-						outline
-						className='me-2'
-						onClick={(e) => {
-							e.preventDefault();
-							navigate(`/Post/${post.id}/Tags`);
-						}}
-					>
-						Manage Tags
-					</Button>
+					<>
+						<Button
+							outline
+							className='me-2'
+							onClick={(e) => {
+								e.preventDefault();
+								navigate(`/Post/${post.id}/Tags`);
+							}}
+						>
+							Manage Tags
+						</Button>
+						<Button
+							outline
+							className='me-2'
+							onClick={(e) => {
+								e.preventDefault();
+								navigate(`/post/edit/${post.id}`);
+							}}
+						>
+							Edit Post
+						</Button>
+					</>
 				) : (
 					""
 				)}
