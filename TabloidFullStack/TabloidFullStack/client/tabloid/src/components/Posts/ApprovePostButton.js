@@ -40,11 +40,42 @@ export const ApprovePostButton = ({
 				});
 			});
 		}
+		if (e.target.id.startsWith("unapprove")) {
+			const copy = { ...post };
+			const postToApprove = {
+				id: copy.id,
+				userProfileId: copy.userProfileId,
+				title: copy.title,
+				content: copy.content,
+				imageLocation: copy.imageLocation,
+				createDateTime: copy.createDateTime,
+				publishDateTime: copy.publishDateTime,
+				isApproved: false,
+				categoryId: copy.categoryId,
+			};
+
+			postToApprove.publishDateTime = post.publishDateTime
+				? post.publishDateTime
+				: null;
+
+			return updatePost(postToApprove).then(() => {
+				getUnapprovedPosts().then((res) => setUnapprovedPosts(res));
+				getAllPosts().then((posts) => {
+					setPosts(posts);
+					setFilteredPosts(posts);
+				});
+			});
+		}
 	};
 
 	if (post.isApproved) {
 		return (
-			<Button size='sm' color='danger' id={`unapprove--${post.id}`}>
+			<Button
+				size='sm'
+				color='danger'
+				id={`unapprove--${post.id}`}
+				onClick={(e) => handleApprove(e)}
+			>
 				Unapprove
 			</Button>
 		);
