@@ -9,6 +9,7 @@ import {
 } from "../../Managers/SubscriptionManager";
 import { SubscribedPostsList } from "../subscriptions/SubscribedPostsList";
 import Hello from "../Hello";
+import { EditPost } from "./EditPost";
 
 export const PostContainer = () => {
 	const [posts, setPosts] = useState([]);
