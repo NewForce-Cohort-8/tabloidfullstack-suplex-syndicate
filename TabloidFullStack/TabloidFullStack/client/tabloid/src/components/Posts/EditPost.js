@@ -96,7 +96,7 @@ export const EditPost = () => {
 					<Label for='category'>Category</Label>
 					<Input
 						id='category'
-						name='category'
+						name='categoryId'
 						type='select'
 						value={post.categoryId}
 						onChange={(e) => handleOnChange(e)}
