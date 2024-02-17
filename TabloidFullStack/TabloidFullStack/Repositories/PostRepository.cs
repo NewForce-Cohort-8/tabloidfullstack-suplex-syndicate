@@ -210,6 +210,8 @@ namespace TabloidFullStack.Repositories
                             FROM Post p
                             LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
+                            LEFT JOIN PostTag pt ON p.Id = pt.PostId
+                            LEFT JOIN Tag t ON pt.TagId = t.Id 
                             WHERE p.Id = @Id
                     ";
 
