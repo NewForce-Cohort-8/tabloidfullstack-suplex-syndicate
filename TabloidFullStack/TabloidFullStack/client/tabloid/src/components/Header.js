@@ -34,7 +34,9 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 										Home
 									</NavLink>
 								</NavItem>
-								<NavItem>
+								<NavItem/>
+								<NavLink tag={RRNavLink} to='/my-posts'>My Posts</NavLink>
+							<NavItem>
 									<NavLink tag={RRNavLink} to='/post'>
 										Posts
 									</NavLink>
@@ -51,8 +53,7 @@ export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
 								</NavItem>
 								<NavItem>
 									<NavLink tag={RRNavLink} to='/Categories'>
-										{" "}
-										Category Management{" "}
+										Category Management
 									</NavLink>
 								</NavItem>
 								{user && user.userTypeId == 1 && (

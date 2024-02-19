@@ -9,5 +9,6 @@ namespace TabloidFullStack.Repositories
 
         List<Post> GetAllUnapprovedPosts();
         Post GetById(int id);
+        List<Post> GetPostByAuthor(int userProfileId);
     }
 }
