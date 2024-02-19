@@ -11,5 +11,6 @@ namespace TabloidFullStack.Repositories
         Post GetById(int id);
 
         void Update(Post post);
+        List<Post> GetPostByAuthor(int userProfileId);
     }
 }

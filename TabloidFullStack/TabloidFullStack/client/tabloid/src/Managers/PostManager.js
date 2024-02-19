@@ -20,6 +20,10 @@ export const getPost = (id) => {
 	return fetch(`/api/post/${id}`).then((res) => res.json());
 };
 
+export const getUserPosts = (id) => {
+	return fetch(`${baseUrl}/GetUserPosts/${id}`).then((res) => res.json());
+};
+
 export const updatePost = (post) => {
 	return fetch(`${baseUrl}/${post.id}`, {
 		method: "PUT",
