@@ -1,37 +1,54 @@
 import { useEffect, useState } from "react"
 import { deletePost, getPost } from "../../Managers/PostManager"
-import { Form, useNavigate, useParams } from "react-router-dom"
-import { Button, Container } from "reactstrap";
+import { Form, useNavigate, useParams, useSubmit } from "react-router-dom"
+import { Button, Card, Container } from "reactstrap";
+import { deletePostTag, getPostTags } from "../../Managers/PostTagManager";
 
 export const DeletePost = () => {
 
-    const [post, setPost] = useState();
+    const [post, setPost] = useState({
+        title: ''
+    });
     const { postId } = useParams();
 	const user = JSON.parse(localStorage.getItem("userProfile"));
 	const navigate = useNavigate();
-   
-    const getThisPost = () => {
-		return getPost(postId).then((post) => setPost(post));
+    const [postTags, setPostTags] = useState([])
+
+    const getTags = () => {
+		return getPostTags(postId).then((tags) => setPostTags(tags));
 	};
 
-
+    
     const handleDelete = (e) => {
         e.preventDefault();
-        deletePost(postId).then(() => 
-            navigate(`/my-posts`));
+        deletePost(postId).then((res) => {
+            if (postTags.length){
+                return postTags.forEach(tag => {deletePostTag(tag)
+        });
+            }
+                
+        })
+        
+        .then(() =>
+         
+        navigate(`/post`));
     };
     useEffect(() => {
-        getPost(postId).then((res) => setPost(res));
+        getPost (postId).then((res) => setPost(res));
     }, [postId]);
     
+    useEffect(() => {
+        getTags();
+    }, [post]);
+   
     // if (user.id == post.userProfileId ){
     
 
     return (
         <Container>
-            <Form>
+            <Card>
                 <h3>
-                    Delete Post {postId}?
+                    Delete Post {postId}, Title: "{post.title}"?
                 </h3>
                 <Button
 					color='danger'					
@@ -45,13 +62,13 @@ export const DeletePost = () => {
 					color='secondary'
 					onClick={(e) => {
 						e.preventDefault();
-						navigate("/post");
+						navigate(`/post/${post.id}`);
 					}}
 				>
 					Cancel
 				</Button>
 
-            </Form>
+            </Card>
         </Container>
 
     );    

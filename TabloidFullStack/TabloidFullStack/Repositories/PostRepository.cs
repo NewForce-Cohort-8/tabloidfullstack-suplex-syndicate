@@ -299,10 +299,10 @@ namespace TabloidFullStack.Repositories
                     cmd.CommandText = @"
                                 DELETE from Comment
                                 WHERE PostId = @id
-                                DELETE FROM Post
-                                WHERE Id = @id
                                 DELETE FROM PostTag
                                 WHERE PostId = @id
+                                DELETE FROM Post
+                                WHERE Id = @id
                             ";
 
                     cmd.Parameters.AddWithValue("@id", postId);

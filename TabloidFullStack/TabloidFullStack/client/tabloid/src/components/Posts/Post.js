@@ -38,10 +38,11 @@ export const Post = ({
 		getTags();
 	}, [post]);
 
+
 	const navigate = useNavigate();
-	const [date] = post.publishDateTime?.split("T");
-	const [year, month, day] = date.split("-");
-	const formattedDate = `${month}/${day}/${year}`;
+	
+	const formattedDate = post.publishDateTime ?  new Date(post.publishDateTime).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) : null
+
 	return (
 		<Card
 			className='m-4'
