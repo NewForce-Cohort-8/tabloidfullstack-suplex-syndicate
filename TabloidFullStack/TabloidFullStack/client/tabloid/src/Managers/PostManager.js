@@ -20,3 +20,8 @@ export const addPost = (singlePost) => {
 export const getPost = (id) => {
     return fetch(`/api/post/${id}`).then((res) => res.json());
 };
+
+export const getUserPosts = (id) => {
+  return fetch(`${baseUrl}/GetUserPosts/${id}`)
+  .then((res) => res.json());
+};
