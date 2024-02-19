@@ -23,6 +23,7 @@ import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
 import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 import { PostContainer } from "./Posts/PostContainer.js";
+import { UserPosts } from "./Posts/UserPosts.js";
 import { EditPost } from "./Posts/EditPost.js";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -35,9 +36,10 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/Tags/Delete/:id' element={<DeleteTag />} />
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
 			<Route path='/post' element={<PostContainer />} />
-			<Route path='/post/:id' element={<PostDetails />} />
+			<Route path="/post/:id" element={<PostDetails />} />
 			<Route path='/post/edit/:postId' element={<EditPost />} />
-			<Route path='/postForm/' element={<PostForm />} />
+			<Route path="/postForm/" element={<PostForm />} />
+			<Route path="/my-posts" element={<UserPosts /> } />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route path='/Categories' element={<CategoryList />} />
@@ -56,7 +58,6 @@ export default function ApplicationViews({ isLoggedIn }) {
 				path='/Post/:postId/Comments/:commentId'
 				element={<CommentDetails />}
 			/>
-
 			{user && user.userTypeId == 1 ? (
 				<>
 					<Route path='/UserProfiles' element={<UserProfileList />} />
@@ -71,12 +72,9 @@ export default function ApplicationViews({ isLoggedIn }) {
 				</>
 			) : (
 				""
-			)}
-			{user && user.userTypeId == 1 ? (
-				<Route path='/UserProfiles/:id' element={<UserProfile />} />
-			) : (
-				""
-			)}
+				)}
+
+			{ user && user.userTypeId == 1? <Route path="/UserProfiles/:id" element={<UserProfile />} />:""}
 			<Route path='/Post/:postId/Tags' element={<PostTagsContainer />} />
 		</Routes>
 	);

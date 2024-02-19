@@ -39,9 +39,16 @@ export const Post = ({
 	}, [post]);
 
 	const navigate = useNavigate();
-	const [date] = post.publishDateTime.split("T");
-	const [year, month, day] = date.split("-");
-	const formattedDate = `${month}/${day}/${year}`;
+
+  // changed previous code to a conditional. Checks to see if publishdate is null. formattedDate starts as null and is reassigned within the conditional so we can conditionally render it in the return. 
+  let formattedDate = null
+  if(post.publishDateTime){
+    const [date] = post?.publishDateTime.split("T");
+    const [year, month, day] = date.split("-");
+     formattedDate = `${month}/${day}/${year}`;
+  }
+
+  
 	return (
 		<Card
 			className='m-4'
@@ -65,7 +72,7 @@ export const Post = ({
 					</div>
 					<div>@{post?.userProfile?.displayName}</div>
 				</Col>
-				<Col className='text-end'>{formattedDate}</Col>
+				{formattedDate ?<Col className='text-end'>{formattedDate}</Col> : ""}
 			</CardHeader>
 			<CardImg top src={post.imageLocation} alt={post.title} className='mb-2' />
 			<CardTitle tag='h5' className='mx-3'>
@@ -137,4 +144,21 @@ export const Post = ({
 			</CardFooter>
 		</Card>
 	);
+  return (
+    <Card className="m-4">
+      <p className="text-left px-2">Posted by: {post.userProfile?.firstName} {post.userProfile?.lastName}</p>
+      <p className="text-left px-2">Author Display Name: {post.userProfile?.displayName}</p>
+      <p className="text-left px-2">Category: {post.category?.name} 
+      <p className="text-left px-2"></p>Published on: {post.publishDateTime}</p>
+      <CardImg top src={post.imageLocation} alt={post.title} />
+      <CardBody>
+        <p>
+          <Link to={`/post/${post.id}`}>
+          <strong>{post.title}</strong>
+          </Link>
+        </p>
+        <p>{post.content}</p>
+      </CardBody>
+    </Card>
+  );
 };
