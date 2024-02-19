@@ -30,8 +30,14 @@ export const updatePost = (post) => {
 	});
 };
 
-
 export const getUserPosts = (id) => {
   return fetch(`${baseUrl}/GetUserPosts/${id}`)
   .then((res) => res.json());
 };
+
+export const deletePost = (id) => {
+	return fetch(`/api/post/${id}`, {
+	  method: "DELETE",
+	})
+	  .then(() => getAllPosts())
+  };

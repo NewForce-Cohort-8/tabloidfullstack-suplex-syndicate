@@ -25,6 +25,7 @@ import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 import { PostContainer } from "./Posts/PostContainer.js";
 import { EditPost } from "./Posts/EditPost.js";
 import { UserPosts } from "./Posts/UserPosts.js";
+import { DeletePost } from "./Posts/DeletePost.js";
 
 export default function ApplicationViews({ isLoggedIn }) {
 	const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -38,6 +39,7 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/post' element={<PostContainer />} />
 			<Route path="/post/:id" element={<PostDetails />} />
 			<Route path='/post/edit/:postId' element={<EditPost />} />
+			<Route path='/post/delete/:postId' element={<DeletePost />} />
 			<Route path="/postForm/" element={<PostForm />} />
 			<Route path="/my-posts" element={<UserPosts /> } />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />

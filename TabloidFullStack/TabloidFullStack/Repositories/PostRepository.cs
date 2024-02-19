@@ -288,66 +288,32 @@ namespace TabloidFullStack.Repositories
             }
         }
 
-            //public void EditPost(Post post)
-            //{
-            //    using (var conn = Connection)
-            //    {
-            //        conn.Open();
-            //        using (var cmd = conn.CreateCommand())
-            //        {
-            //            cmd.CommandText = @"
-            //                UPDATE Post
-            //                    SET 
-            //                        [Title] = @Title,
-            //                        Content = @Content,
-            //                        ImageLocation = @ImageLocation,
-            //                        CreateDateTime = @CreateDateTime,
-            //                        PublishDateTime = @PublishDateTime,
-            //                        IsApproved = @IsApproved,
-            //                        CategoryId = @CategoryId,
-            //                        UserProfileId = @UserProfileId
-            //                    WHERE Id = @id
-            //            ";
+        public void DeletePost(int postId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
 
-            //            cmd.Parameters.AddWithValue("@Id", post.Id);
-            //            cmd.Parameters.AddWithValue("@Title", post.Title);
-            //            cmd.Parameters.AddWithValue("@Content", post.Content);
-            //            cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
-            //            cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
-            //            cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
-            //            cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
-            //            cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
-            //            cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                DELETE from Comment
+                                WHERE PostId = @id
+                                DELETE FROM Post
+                                WHERE Id = @id
+                                DELETE FROM PostTag
+                                WHERE PostId = @id
+                            ";
 
-            //            cmd.ExecuteNonQuery();
-            //        }
-            //    }
-            //}
+                    cmd.Parameters.AddWithValue("@id", postId);
 
-            //public void DeletePost(int postId)
-            //{
-            //    using (SqlConnection conn = Connection)
-            //    {
-            //        conn.Open();
-
-            //        using (SqlCommand cmd = conn.CreateCommand())
-            //        {
-            //            cmd.CommandText = @"
-            //                    DELETE from Comment
-            //                    WHERE PostId = @id
-            //                    DELETE FROM Post
-            //                    WHERE Id = @id
-            //                ";
-
-            //            cmd.Parameters.AddWithValue("@id", postId);
-
-            //            cmd.ExecuteNonQuery();
-            //        }
-            //    }
-            //}
-
-
-
-
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
+
+
+
+
+    }
     }

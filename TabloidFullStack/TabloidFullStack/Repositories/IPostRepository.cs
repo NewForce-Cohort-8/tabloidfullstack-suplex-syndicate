@@ -10,5 +10,6 @@ namespace TabloidFullStack.Repositories
 
         void Update(Post post);
         List<Post> GetPostByAuthor(int userProfileId);
+        void DeletePost(int postId);
     }
 }
