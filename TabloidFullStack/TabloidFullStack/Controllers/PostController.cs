@@ -23,6 +23,12 @@ namespace TabloidFullStack.Controllers
             return Ok(_postRepository.GetAll());
         }
 
+        [HttpGet("GetUnapprovedPosts")]
+        public IActionResult GetUnapproved()
+        {
+            return Ok(_postRepository.GetAllUnapprovedPosts());
+        }
+
         [HttpGet("GetUserPosts/{id}")]
         public IActionResult Get(int id)
         {

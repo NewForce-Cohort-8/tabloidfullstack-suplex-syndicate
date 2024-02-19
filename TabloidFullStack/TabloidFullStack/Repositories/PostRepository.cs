@@ -68,8 +68,8 @@ namespace TabloidFullStack.Repositories
                                 ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                                 PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                                IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
-                                UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
+                                IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
+                                 UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
                                 UserProfile = new UserProfile()
                                 {
                                     Id = DbUtils.GetInt(reader, "AuthorId"),
@@ -78,7 +78,7 @@ namespace TabloidFullStack.Repositories
                                     FirstName = DbUtils.GetString(reader, "AuthorFirstName"),
                                     LastName = DbUtils.GetString(reader, "AuthorLastName"),
                                     Email = DbUtils.GetString(reader, "Email"),
-                                CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
+                                    CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
                                 },
                                 Tags = new List<Tag>()
                             };
@@ -102,6 +102,94 @@ namespace TabloidFullStack.Repositories
             }
         }
 
+        public List<Post> GetAllUnapprovedPosts()
+        {
+            using (var conn = Connection)
+            {
+
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    SELECT p.Id, p.Title, p.CategoryId, p.Content, p.ImageLocation AS HeaderImage, 
+                           p.CreateDateTime, p.PublishDateTime, p.IsApproved, 
+
+                           c.Id as CategoryCategoryId, c.Name as CategoryName,
+                           
+                           up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, 
+                           up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, 
+                           up.ImageLocation AS AuthorImage,
+
+                           pt.Id AS PostTagId, pt.PostId AS PostTagPostId, pt.TagId AS PostTagTagId,
+                           
+                           t.Id as TagId, t.Name as TagName
+
+                            FROM Post p
+                            LEFT JOIN Category c ON p.CategoryId = c.id
+                            LEFT JOIN UserProfile up ON p.UserProfileId = up.id
+                            LEFT JOIN PostTag pt ON p.Id = pt.PostId
+                            LEFT JOIN Tag t ON pt.TagId = t.Id 
+                            WHERE IsApproved = 0 AND PublishDateTime < SYSDATETIME()
+                            ORDER BY PublishDateTime DESC;
+                    ";
+
+                    var reader = cmd.ExecuteReader();
+
+                    var posts = new List<Post>();
+                    while (reader.Read())
+                    {
+                        var postId = DbUtils.GetInt(reader, "Id");
+                        var existingPost = posts.FirstOrDefault(p => p.Id == postId);
+                        if (existingPost == null)
+                        {
+                            existingPost = new Post()
+                            {
+                                Id = postId,
+                                Title = DbUtils.GetString(reader, "Title"),
+                                CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                                Category = new Category()
+                                {
+                                    Id = DbUtils.GetInt(reader, "CategoryId"),
+                                    Name = DbUtils.GetString(reader, "CategoryName")
+                                },
+                                Content = DbUtils.GetString(reader, "Content"),
+                                ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                                PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
+                                IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
+                                UserProfileId = DbUtils.GetInt(reader, "AuthorId"),
+                                UserProfile = new UserProfile()
+                                {
+                                    Id = DbUtils.GetInt(reader, "AuthorId"),
+                                    DisplayName = DbUtils.GetString(reader, "AuthorDisplayName"),
+                                    ImageLocation = DbUtils.GetString(reader, "AuthorImage"),
+                                    FirstName = DbUtils.GetString(reader, "AuthorFirstName"),
+                                    LastName = DbUtils.GetString(reader, "AuthorLastName"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
+                                },
+                                Tags = new List<Tag>()
+                            };
+                            posts.Add(existingPost);
+                        }
+                        if (DbUtils.IsNotDbNull(reader, "PostTagId"))
+                        {
+                            existingPost.Tags.Add(new Tag()
+                            {
+                                Id = DbUtils.GetInt(reader, "TagId"),
+                                Name = DbUtils.GetString(reader, "TagName"),
+                            });
+                        }
+
+
+                    }
+                    reader.Close();
+
+                    return posts;
+                }
+            }
+        }
+
         public Post GetById(int id)
         {
 
@@ -113,15 +201,20 @@ namespace TabloidFullStack.Repositories
                     cmd.CommandText = @"
                     SELECT p.Id AS PostId, p.Title, p.CategoryId, p.Content, p.ImageLocation AS HeaderImage, p.CreateDateTime, p.PublishDateTime, p.IsApproved, 
 
-                     c.Id as CategoryCategoryId, c.Name as CategoryName,
+                    c.Id as CategoryCategoryId, c.Name as CategoryName,
 
-                     up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, up.ImageLocation AS AuthorImage
+                    up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, up.LastName AS AuthorLastName, up.Email, up.CreateDateTime AS AuthorCreateDateTime, up.ImageLocation AS AuthorImage,
+
+                    pt.Id AS PostTagId, pt.PostId AS PostTagPostId, pt.TagId AS PostTagTagId,
+                           
+                    t.Id as TagId, t.Name as TagName
 
                             FROM Post p
                             LEFT JOIN Category c ON p.CategoryId = c.id
                             LEFT JOIN UserProfile up ON p.UserProfileId = up.id
+                           LEFT JOIN PostTag pt ON p.Id = pt.PostId
+                            LEFT JOIN Tag t ON pt.TagId = t.Id 
                             WHERE p.Id = @Id
-
                     ";
 
                     DbUtils.AddParameter(cmd, "@Id", id);
@@ -140,7 +233,7 @@ namespace TabloidFullStack.Repositories
                             ImageLocation = DbUtils.GetString(reader, "HeaderImage"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                             PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
-                            IsApproved = DbUtils.IsNotDbNull(reader, "IsApproved"),
+                            IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
                             CategoryId = DbUtils.GetInt(reader, "CategoryId"),
                             Category = new Category()
                             {
@@ -157,7 +250,9 @@ namespace TabloidFullStack.Repositories
                                 LastName = DbUtils.GetString(reader, "AuthorLastName"),
                                 CreateDateTime = DbUtils.GetDateTime(reader, "AuthorCreateDateTime")
                             }
-                        };
+
+                         };
+                      
                     }
                     reader.Close();
                     return post;
