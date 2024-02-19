@@ -192,42 +192,6 @@ namespace TabloidFullStack.Repositories
             }
         }
 
-        public void Update(Post post)
-        {
-            using (var conn = Connection)
-            {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"
-                        UPDATE Post
-                           SET UserProfileId = @UserProfileId,
-                           Title = @Title,
-                           Content = @Content,
-                           ImageLocation = @ImageLocation,
-                           CreateDateTime = @CreateDateTime,
-                           PublishDateTime = @PublishDateTime,
-                           IsApproved = @IsApproved,
-                           CategoryId = @CategoryId
-                           WHERE Id = @id;";
-
-                    DbUtils.AddParameter(cmd, "@id", post.Id);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", post.UserProfileId);
-                    DbUtils.AddParameter(cmd, "@Title", post.Title);
-                    DbUtils.AddParameter(cmd, "@Content", post.Content);
-                    DbUtils.AddParameter(cmd, "@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
-                    DbUtils.AddParameter(cmd, "@CreateDateTime", post.CreateDateTime);
-                    DbUtils.AddParameter(cmd, "@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
-                    DbUtils.AddParameter(cmd, "@IsApproved", post.IsApproved);
-                    DbUtils.AddParameter(cmd, "@CategoryId", post.CategoryId);
-
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-
         public List<Post> GetPostByAuthor(int userProfileId)
         {
             using (var conn = Connection)
@@ -288,6 +252,43 @@ namespace TabloidFullStack.Repositories
             }
         }
 
+
+
+        public void Update(Post post)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Post
+                           SET UserProfileId = @UserProfileId,
+                           Title = @Title,
+                           Content = @Content,
+                           ImageLocation = @ImageLocation,
+                           CreateDateTime = @CreateDateTime,
+                           PublishDateTime = @PublishDateTime,
+                           IsApproved = @IsApproved,
+                           CategoryId = @CategoryId
+                           WHERE Id = @id;";
+
+                    DbUtils.AddParameter(cmd, "@id", post.Id);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", post.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Title", post.Title);
+                    DbUtils.AddParameter(cmd, "@Content", post.Content);
+                    DbUtils.AddParameter(cmd, "@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
+                    DbUtils.AddParameter(cmd, "@CreateDateTime", post.CreateDateTime);
+                    DbUtils.AddParameter(cmd, "@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
+                    DbUtils.AddParameter(cmd, "@IsApproved", post.IsApproved);
+                    DbUtils.AddParameter(cmd, "@CategoryId", post.CategoryId);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void DeletePost(int postId)
         {
             using (SqlConnection conn = Connection)
@@ -313,7 +314,7 @@ namespace TabloidFullStack.Repositories
         }
 
 
+    }
+}
 
 
-    }
-    }
