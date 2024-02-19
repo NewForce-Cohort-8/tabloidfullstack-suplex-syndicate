@@ -23,6 +23,7 @@ import { PostTagsContainer } from "./postTags/PostTagsContainer.js";
 import { DeactivateUser } from "./UserProfile/DeactivateUser.js";
 import { ReactivateUser } from "./UserProfile/ReactivateUser.js";
 import { PostContainer } from "./Posts/PostContainer.js";
+import { EditPost } from "./Posts/EditPost.js";
 import { UserPosts } from "./Posts/UserPosts.js";
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -36,16 +37,15 @@ export default function ApplicationViews({ isLoggedIn }) {
 			<Route path='/Tags/Edit/:id' element={<EditTag />} />
 			<Route path='/post' element={<PostContainer />} />
 			<Route path="/post/:id" element={<PostDetails />} />
+			<Route path='/post/edit/:postId' element={<EditPost />} />
 			<Route path="/postForm/" element={<PostForm />} />
 			<Route path="/my-posts" element={<UserPosts /> } />
-			<Route path='/Categories' element={<CategoryList />} />
-      		<Route path="/categories/form" element={<AddCategory />} />
 			<Route path='/Post/:postId/Comments' element={<CommentList />} />
 			<Route path='/Post/:postId/Comments/Add' element={<AddComment />} />
 			<Route path='/Categories' element={<CategoryList />} />
 			<Route path='/Categories/Edit/:id' element={<EditCategory />} />
 			<Route path='/Categories/Delete/:id' element={<DeleteCategory />} />
-      <	Route path="/categories/form" element={<AddCategory />} />
+			<Route path='/categories/form' element={<AddCategory />} />
 			<Route
 				path='/Post/:postId/Comments/Delete/:commentId'
 				element={<DeleteComment />}
