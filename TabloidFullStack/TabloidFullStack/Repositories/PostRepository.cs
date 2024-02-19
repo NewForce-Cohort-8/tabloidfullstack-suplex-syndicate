@@ -29,7 +29,7 @@ namespace TabloidFullStack.Repositories
                            c.Id as CategoryCategoryId, c.Name as CategoryName,
                            
                            up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, 
-                           up.LastName AS AuthorLastName, up.CreateDateTime AS AuthorCreateDateTime, 
+                           up.LastName AS AuthorLastName, up.CreateDateTime AS AuthorCreateDateTime, up.Email,
                            up.ImageLocation AS AuthorImage,
 
                            pt.Id AS PostTagId, pt.PostId AS PostTagPostId, pt.TagId AS PostTagTagId,
@@ -117,7 +117,7 @@ namespace TabloidFullStack.Repositories
                            c.Id as CategoryCategoryId, c.Name as CategoryName,
                            
                            up.Id AS AuthorId, up.DisplayName AS AuthorDisplayName, up.FirstName AS AuthorFirstName, 
-                           up.LastName AS AuthorLastName, up.CreateDateTime AS AuthorCreateDateTime, 
+                           up.LastName AS AuthorLastName, up.CreateDateTime AS AuthorCreateDateTime, up.Email,
                            up.ImageLocation AS AuthorImage,
 
                            pt.Id AS PostTagId, pt.PostId AS PostTagPostId, pt.TagId AS PostTagTagId,
