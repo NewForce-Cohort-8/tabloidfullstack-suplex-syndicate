@@ -36,6 +36,7 @@ namespace TabloidFullStack.Models
         public UserType? UserType { get; set; }
         public UserStatus? UserStatus { get; set; }
 
+        public string? Password { get; set; }
         public string FullName
         {
             get
